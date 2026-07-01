@@ -4,6 +4,7 @@ import usersRouter from './routes/users.js';
 import transactionsRouter from './routes/transactions.js';
 import jointRouter from './routes/joint.js';
 import goalsRouter from './routes/goals.js';
+import categoriesRouter from './routes/categories.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,6 +16,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/joint', jointRouter);
 app.use('/api/goals', goalsRouter);
+app.use('/api/categories', categoriesRouter);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

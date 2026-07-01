@@ -12,7 +12,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="bg-white border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <span className="font-semibold text-slate-800">Couples Budget</span>
             <nav className="flex gap-1">
@@ -25,6 +25,12 @@ export default function Layout() {
               <NavLink to="/goals" className={navItemClass}>
                 Goals
               </NavLink>
+              <NavLink to="/opportunity" className={navItemClass}>
+                Opportunity
+              </NavLink>
+              <NavLink to="/settings" className={navItemClass}>
+                Settings
+              </NavLink>
             </nav>
           </div>
           <button
@@ -35,7 +41,7 @@ export default function Layout() {
           </button>
         </div>
       </header>
-      <main className="max-w-5xl mx-auto px-4 py-6">
+      <main className="max-w-6xl mx-auto px-4 py-6">
         <Outlet />
       </main>
     </div>

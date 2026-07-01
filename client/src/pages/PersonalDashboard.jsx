@@ -5,24 +5,29 @@ import { currentMonth, formatMoney } from '../lib/categories.js';
 import SummaryCard from '../components/SummaryCard.jsx';
 import TransactionForm from '../components/TransactionForm.jsx';
 import TransactionList from '../components/TransactionList.jsx';
+import CategoryBarChart from '../components/CategoryBarChart.jsx';
+import TrendChart from '../components/TrendChart.jsx';
 
 export default function PersonalDashboard() {
   const { activeUser } = useProfile();
   const [month, setMonth] = useState(currentMonth());
   const [summary, setSummary] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [trend, setTrend] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     if (!activeUser) return;
-    const [s, t] = await Promise.all([
+    const [s, t, tr] = await Promise.all([
       api.getSummary(activeUser.id, month),
       api.getTransactions(activeUser.id, month),
+      api.getTrend(activeUser.id, 6),
     ]);
     setSummary(s);
     setTransactions(t);
+    setTrend(tr);
   }, [activeUser, month]);
 
   useEffect(() => {
@@ -78,19 +83,21 @@ export default function PersonalDashboard() {
         </div>
       )}
 
-      {summary && summary.byCategory.length > 0 && (
-        <div className="bg-white rounded-lg border border-slate-200 p-4">
-          <h2 className="text-sm font-semibold text-slate-700 mb-3">Spending by category</h2>
-          <div className="space-y-2">
-            {summary.byCategory.map((c) => (
-              <div key={c.category} className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">{c.category}</span>
-                <span className="font-medium text-slate-800">{formatMoney(c.total)}</span>
-              </div>
-            ))}
+      <div className="grid grid-cols-2 gap-4">
+        {summary && summary.byCategory.length > 0 && (
+          <div className="bg-white rounded-lg border border-slate-200 p-4">
+            <h2 className="text-sm font-semibold text-slate-700 mb-3">Spending by category</h2>
+            <CategoryBarChart data={summary.byCategory} />
           </div>
-        </div>
-      )}
+        )}
+
+        {trend.length > 0 && (
+          <div className="bg-white rounded-lg border border-slate-200 p-4">
+            <h2 className="text-sm font-semibold text-slate-700 mb-3">Trend (last 6 months)</h2>
+            <TrendChart data={trend} />
+          </div>
+        )}
+      </div>
 
       <div>
         <div className="flex items-center justify-between mb-3">

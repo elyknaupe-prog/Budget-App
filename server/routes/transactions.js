@@ -10,6 +10,31 @@ function monthBounds(month) {
   return { start: `${month}-01`, end };
 }
 
+function monthlyTotals(userId, month) {
+  const { end } = monthBounds(month);
+  const totals = db
+    .prepare(
+      `SELECT type, COALESCE(SUM(amount), 0) as total FROM transactions
+       WHERE user_id = ?
+         AND (
+           (recurring = 0 AND strftime('%Y-%m', date) = ?)
+           OR (recurring = 1 AND date < ?)
+         )
+       GROUP BY type`
+    )
+    .all(userId, month, end);
+
+  const income = totals.find((t) => t.type === 'income')?.total ?? 0;
+  const expenses = totals.find((t) => t.type === 'expense')?.total ?? 0;
+  return { income, expenses, surplus: income - expenses };
+}
+
+function shiftMonth(month, delta) {
+  const [year, m] = month.split('-').map(Number);
+  const date = new Date(Date.UTC(year, m - 1 + delta, 1));
+  return date.toISOString().slice(0, 7);
+}
+
 router.get('/', (req, res) => {
   const { user_id, month } = req.query;
   if (!user_id) {
@@ -42,21 +67,7 @@ router.get('/summary/:userId', (req, res) => {
   const { userId } = req.params;
   const month = req.query.month || new Date().toISOString().slice(0, 7);
   const { end } = monthBounds(month);
-
-  const totals = db
-    .prepare(
-      `SELECT type, COALESCE(SUM(amount), 0) as total FROM transactions
-       WHERE user_id = ?
-         AND (
-           (recurring = 0 AND strftime('%Y-%m', date) = ?)
-           OR (recurring = 1 AND date < ?)
-         )
-       GROUP BY type`
-    )
-    .all(userId, month, end);
-
-  const income = totals.find((t) => t.type === 'income')?.total ?? 0;
-  const expenses = totals.find((t) => t.type === 'expense')?.total ?? 0;
+  const { income, expenses, surplus } = monthlyTotals(userId, month);
 
   const byCategory = db
     .prepare(
@@ -75,9 +86,23 @@ router.get('/summary/:userId', (req, res) => {
     month,
     income,
     expenses,
-    surplus: income - expenses,
+    surplus,
     byCategory,
   });
+});
+
+router.get('/trend/:userId', (req, res) => {
+  const { userId } = req.params;
+  const months = Math.min(Number(req.query.months) || 6, 24);
+  const endMonth = req.query.month || new Date().toISOString().slice(0, 7);
+
+  const series = [];
+  for (let i = months - 1; i >= 0; i -= 1) {
+    const month = shiftMonth(endMonth, -i);
+    series.push({ month, ...monthlyTotals(userId, month) });
+  }
+
+  res.json(series);
 });
 
 router.post('/', (req, res) => {

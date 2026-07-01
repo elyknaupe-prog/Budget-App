@@ -50,8 +50,37 @@ db.exec(`
     current_amount REAL NOT NULL DEFAULT 0,
     priority INTEGER NOT NULL DEFAULT 0
   );
+
+  CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL CHECK (type IN ('income', 'expense')),
+    name TEXT NOT NULL,
+    UNIQUE (type, name)
+  );
 `);
 
 db.prepare(`INSERT OR IGNORE INTO joint_account (id, balance) VALUES (1, 0)`).run();
+
+const DEFAULT_CATEGORIES = [
+  ['expense', 'Rent'],
+  ['expense', 'Groceries'],
+  ['expense', 'Utilities'],
+  ['expense', 'Subscriptions'],
+  ['expense', 'Debt payments'],
+  ['expense', 'Transportation'],
+  ['expense', 'Discretionary'],
+  ['expense', 'Other'],
+  ['income', 'Salary'],
+  ['income', 'Freelance'],
+  ['income', 'Gift'],
+  ['income', 'Other'],
+];
+
+const insertCategory = db.prepare(
+  'INSERT OR IGNORE INTO categories (type, name) VALUES (?, ?)'
+);
+for (const [type, name] of DEFAULT_CATEGORIES) {
+  insertCategory.run(type, name);
+}
 
 export default db;

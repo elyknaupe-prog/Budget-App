@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from '../lib/categories.js';
+import { useEffect, useState } from 'react';
+import { api } from '../lib/api.js';
 
 const emptyForm = {
   type: 'expense',
-  category: EXPENSE_CATEGORIES[0],
+  category: '',
   amount: '',
   date: new Date().toISOString().slice(0, 10),
   recurring: false,
@@ -13,20 +13,30 @@ const emptyForm = {
 export default function TransactionForm({ initial, onSubmit, onCancel }) {
   const [form, setForm] = useState(initial || emptyForm);
   const [saving, setSaving] = useState(false);
-  const categories = form.type === 'expense' ? EXPENSE_CATEGORIES : INCOME_CATEGORIES;
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api.getCategories().then(setCategories).catch(() => {});
+  }, []);
+
+  const options = categories.filter((c) => c.type === form.type);
+
+  useEffect(() => {
+    if (!form.category && options.length > 0) {
+      setForm((f) => ({ ...f, category: options[0].name }));
+    }
+  }, [options, form.category]);
 
   const update = (field, value) =>
-    setForm((f) => ({
-      ...f,
-      [field]: value,
-      ...(field === 'type'
-        ? { category: value === 'expense' ? EXPENSE_CATEGORIES[0] : INCOME_CATEGORIES[0] }
-        : {}),
-    }));
+    setForm((f) => {
+      if (field !== 'type') return { ...f, [field]: value };
+      const firstOfType = categories.find((c) => c.type === value);
+      return { ...f, type: value, category: firstOfType ? firstOfType.name : '' };
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.amount || Number(form.amount) <= 0) return;
+    if (!form.amount || Number(form.amount) <= 0 || !form.category) return;
     setSaving(true);
     try {
       await onSubmit({ ...form, amount: Number(form.amount) });
@@ -61,9 +71,9 @@ export default function TransactionForm({ initial, onSubmit, onCancel }) {
         onChange={(e) => update('category', e.target.value)}
         className="col-span-1 px-3 py-2 rounded-md border border-slate-300 text-sm"
       >
-        {categories.map((c) => (
-          <option key={c} value={c}>
-            {c}
+        {options.map((c) => (
+          <option key={c.id} value={c.name}>
+            {c.name}
           </option>
         ))}
       </select>

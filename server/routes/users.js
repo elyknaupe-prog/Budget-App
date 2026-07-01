@@ -31,4 +31,32 @@ router.post('/', (req, res) => {
   }
 });
 
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const existing = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
+  if (!existing) {
+    return res.status(404).json({ error: 'user not found' });
+  }
+
+  const {
+    name = existing.name,
+    email = existing.email,
+    savings_rate_target = existing.savings_rate_target,
+  } = req.body;
+
+  try {
+    db.prepare(
+      'UPDATE users SET name = ?, email = ?, savings_rate_target = ? WHERE id = ?'
+    ).run(name, email, savings_rate_target, id);
+  } catch (err) {
+    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+      return res.status(409).json({ error: 'email already in use' });
+    }
+    throw err;
+  }
+
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
+  res.json(user);
+});
+
 export default router;
