@@ -22,7 +22,7 @@ Thanks, y'all 🙏
 
 ## Post — Dallas Small Business Group (copy-paste)
 
-Hey y'all 👋 New to the group — I'm [first name], born and raised around DFW [adjust to your real local tie: neighborhood, how long you've been here, kids' school, etc.].
+Hey y'all 👋 New to the group — I'm [first name], living here in DFW [add a real local detail if you like: your neighborhood, how long you've been here, kids' school, etc.].
 
 I spend a lot of time around youth sports here in Dallas, and I can tell you there are a TON of local teams right now looking for sponsors — jerseys, banners, team gear, you name it. Most of these teams would love to rep a neighborhood business instead of leaving that jersey space blank, and it's usually way more affordable than people expect.
 
