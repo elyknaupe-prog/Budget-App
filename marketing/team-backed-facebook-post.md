@@ -34,6 +34,27 @@ Takes 2–3 minutes, no commitment — it just tells me what kind of team/area y
 
 Thanks, and glad to be here 🙏
 
+## Post — DFW Business Group v2: "Teams ready now" (copy-paste)
+
+Hey DFW business owners 👋
+
+Quick one: I connect local youth sports teams with neighborhood businesses that want their name on jerseys — and right now I have **Dallas-area teams actively looking for sponsors**.
+
+We just made our first match: a Dallas business is now the founding sponsor of a 10U football team in Balch Springs — logo on the jerseys, tagged in every social post, and a monthly update with photos of their name in action. Total cost to them? Less than most businesses spend on ads nobody remembers.
+
+Sponsorships start around $300/month, and here's what you get:
+🏈 Your logo on jerseys or the team banner
+📱 Tagged in the team's social posts all season
+📸 A monthly report — photos, post links, results
+
+If you want your business in front of the families that pack the stands every weekend, drop your info here and I'll match you with a team:
+
+👉 https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+Takes 2–3 minutes, no commitment. Happy to answer questions in the comments. Questions? teambackedsupport@gmail.com
+
+Thanks, y'all 🙏
+
 ## Notes
 
 - Survey-style framing: asks for input rather than pitching Team Backed. Adjust the middle sentence if the form asks about different topics than funding/support.
