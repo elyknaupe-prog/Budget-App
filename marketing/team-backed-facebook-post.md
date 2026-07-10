@@ -55,6 +55,47 @@ Takes 2–3 minutes, no commitment. Happy to answer questions in the comments. Q
 
 Thanks, y'all 🙏
 
+## Cold outreach email — local businesses near a team (template)
+
+Subject: Your logo on [TEAM NAME]'s jerseys — [CITY]'s youth [SPORT] team is looking for a local sponsor
+
+Hi [FIRST NAME / BUSINESS NAME] team,
+
+I run Team Backed — we connect youth sports teams with local businesses that want their name in front of hometown families.
+
+[TEAM NAME], a [AGE GROUP] [SPORT] team right in [CITY], is looking for sponsors this season. Here's what sponsorship gets you:
+
+- Your logo on the team's jerseys or banner — seen by the families that pack the stands every week
+- Tagged in the team's social media posts all season
+- A monthly report with photos of your logo in action, post links, and results
+
+Sponsorships start around $300/month, and we handle everything — you never chase a coach for photos or wonder where the money went. (For transparency: Team Backed retains a 20% platform fee; the rest goes directly to the team.)
+
+If you'd like to be the name on [TEAM NAME]'s jerseys, just reply to this email or fill out our 2-minute form:
+https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+No pressure either way — and if now isn't the right time, I'd love to keep you in mind for next season.
+
+Ely
+Team Backed
+teambackedsupport@gmail.com
+
+### Chamber-of-commerce variant (send to chamber contacts)
+
+Subject: A sponsorship opportunity for your members — [CITY]'s youth [SPORT] team
+
+Hi [NAME],
+
+I run Team Backed — we match youth sports teams with local businesses for jersey/banner sponsorships (starting around $300/month, with monthly photo reports back to the sponsor).
+
+[TEAM NAME], a [AGE GROUP] [SPORT] team in [CITY], is looking for local sponsors this season, and I'd love to get this opportunity in front of your members — it's exactly the kind of community visibility small businesses ask about. Would you be willing to share it in your member newsletter or point me to members who sponsor local youth sports?
+
+Happy to send a one-paragraph blurb ready to paste. Thank you!
+
+Ely
+Team Backed
+teambackedsupport@gmail.com
+
 ## Notes
 
 - Survey-style framing: asks for input rather than pitching Team Backed. Adjust the middle sentence if the form asks about different topics than funding/support.
