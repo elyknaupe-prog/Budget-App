@@ -1,0 +1,88 @@
+/*
+ * Best-effort re-skin of the embedded Ecwid storefront to match the
+ * site's dark/brass design. Two layers of theming apply here:
+ *
+ *   1. Ecwid admin → Design: set "Color scheme" to dark, primary color
+ *      #C9A876, font to Inter. Do that FIRST — it handles most of the
+ *      storefront, including parts (cart drawer, checkout) that render
+ *      outside this page's DOM and that this stylesheet cannot reach.
+ *   2. This file: overrides for the product browser that IS injected
+ *      into the page DOM, so page CSS applies.
+ *
+ * Expectation set with the client: Ecwid exposes less styling control
+ * than a native build, so the store section will be close to — but not
+ * pixel-identical with — the rest of the site. Checkout in particular
+ * stays mostly Ecwid-styled.
+ *
+ * Ecwid class names below are from the current-gen storefront; if
+ * Ecwid ships a storefront update these may need revisiting.
+ */
+
+.ec-size .ec-store {
+  background: transparent;
+  color: #EDEAE3;
+  font-family: "Inter", sans-serif;
+}
+
+/* Product cards */
+.ec-size .ec-store .grid-product__image {
+  background: #1F2225;
+  border: 1px solid #2C3034;
+}
+.ec-size .ec-store .grid-product__title,
+.ec-size .ec-store .grid-product__title-inner {
+  color: #EDEAE3;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.ec-size .ec-store .grid-product__price,
+.ec-size .ec-store .grid-product__price-value {
+  color: #C9A876;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+}
+
+/* Buttons */
+.ec-size .ec-store .form-control__button,
+.ec-size .ec-store .details-product-purchase__add-to-bag button {
+  background: #C9A876;
+  color: #15171A;
+  border-radius: 0;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.ec-size .ec-store .form-control__button:hover {
+  background: #EDEAE3;
+}
+
+/* Category nav / breadcrumbs / secondary text */
+.ec-size .ec-store .ec-breadcrumbs,
+.ec-size .ec-store .grid__categories .grid-category__title {
+  color: #7A7F85;
+}
+.ec-size .ec-store .grid-category__title {
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+}
+
+/* Product detail page text */
+.ec-size .ec-store .product-details__product-title {
+  color: #EDEAE3;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+}
+.ec-size .ec-store .product-details__product-price {
+  color: #C9A876;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Inputs */
+.ec-size .ec-store .form-control__text,
+.ec-size .ec-store input[type="text"] {
+  background: #1F2225;
+  border-color: #2C3034;
+  color: #EDEAE3;
+  border-radius: 0;
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Texas Hunting Tools — Design Preview</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../wp-theme/tx-hunting-tools/style.css">
+<style>
+/* Preview-only: placeholder product cards standing in for the Ecwid embed. */
+.preview-banner {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; text-align: center; color: var(--bg);
+  background: var(--brass); padding: 6px;
+}
+.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.product-card { border: 1px solid var(--line); background: var(--panel); }
+.product-card .ph {
+  aspect-ratio: 1; background: var(--bg); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--steel);
+}
+.product-card .meta { padding: 16px; }
+.product-card h3 { font-size: 16px; margin-bottom: 6px; }
+.product-card .price { font-family: var(--mono); font-size: 13px; color: var(--brass); }
+.product-card .badge {
+  display: inline-block; font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.14em; color: var(--rust); border: 1px solid var(--rust);
+  padding: 3px 7px; margin-top: 10px; text-transform: uppercase;
+}
+@media (max-width: 860px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .product-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="preview-banner">Static design preview — Ecwid storefront renders in the Shop section on the live WordPress build</div>
+
+<nav class="site-nav" id="site-nav">
+  <div class="wrap">
+    <a class="logo-mark" href="#"><span class="mark">THT</span><span>Texas Hunting Tools</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">MENU</button>
+    <ul class="nav-links" id="primary-menu">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#custom-work">Custom Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="btn nav-cta" href="#contact">Book Appointment</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">07/02 FFL Manufacturer — League City, Texas</p>
+    <h1>Machined for the field. <em>Built in-house.</em></h1>
+    <p class="sub">Custom suppressors, firearm work, and precision-machined hunting gear out of our own shop — 5-axis CNC, manual lathes, laser engraving, welding, and 3D printing under one roof. Regulated items transfer through our League City shop; gear ships nationwide.</p>
+    <div class="hero-ctas">
+      <a class="btn btn--solid" href="#shop">Shop Now</a>
+      <a class="btn" href="#custom-work">Start a Custom Build</a>
+    </div>
+    <div class="info-plate" aria-label="Shop information">
+      <div><div class="label">FFL License</div><div class="value">5-76-167-07-8K-07838</div></div>
+      <div><div class="label">Location</div><div class="value">League City, TX</div></div>
+      <div><div class="label">Shop Floor</div><div class="value">CNC &middot; LATHE &middot; LASER &middot; WELD</div></div>
+      <div><div class="label">Season</div><div class="value rust">WHITETAIL — GENERAL SEASON</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities">
+  <div class="wrap">
+    <p class="kicker">Capabilities</p>
+    <h2>The Nameplate</h2>
+    <p class="section-lede">Everything we sell is backed by the machines it was made on. No drop-shipped catalog — this is the actual floor.</p>
+    <div class="cap-grid">
+      <div class="cap-cell"><div class="idx">01 / CNC</div><h3>5-Axis CNC Milling</h3><p>Baffle stacks, tube bodies, receivers, and one-off fixtures cut from billet.</p><div class="spec">5-AXIS &middot; ALUMINUM / TI / STAINLESS</div></div>
+      <div class="cap-cell"><div class="idx">02 / LATHE</div><h3>Manual Lathe Work</h3><p>Barrel threading, muzzle-device fitment, chamber and crown work.</p><div class="spec">THREADING &middot; TURNING &middot; FITMENT</div></div>
+      <div class="cap-cell"><div class="idx">03 / LASER</div><h3>Laser Engraving</h3><p>ATF-compliant maker marks, serials, and custom graphics on metal.</p><div class="spec">FORM 1 / FORM 2 MARKING</div></div>
+      <div class="cap-cell"><div class="idx">04 / WELD</div><h3>Welding</h3><p>TIG work on fixtures, brackets, blinds, and field-equipment repair.</p><div class="spec">TIG &middot; STEEL / ALUMINUM</div></div>
+      <div class="cap-cell"><div class="idx">05 / PRINT</div><h3>3D Printing</h3><p>Rapid prototyping for grips, guards, and custom-build mockups before metal.</p><div class="spec">PROTOTYPE &rarr; PRODUCTION</div></div>
+      <div class="cap-cell"><div class="idx">06 / FFL</div><h3>FFL Transfers</h3><p>In-shop transfers and NFA item handling under our 07/02 license.</p><div class="spec">5-76-167-07-8K-07838</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="wrap">
+    <p class="kicker">Shop</p>
+    <h2>Gear &amp; Builds</h2>
+    <p class="section-lede">Optics, apparel, and field tools ship straight to you. Suppressors and custom firearms are transfer-only — pick up in-shop or arrange an FFL transfer after checkout.</p>
+    <div class="shop-note">
+      <strong>Transfer Only</strong>
+      <span>Regulated items (suppressors, firearms) do not ship direct. Fulfillment is in-store pickup or FFL transfer — details on each product page.</span>
+    </div>
+    <div class="product-grid">
+      <div class="product-card"><div class="ph">IMG — PENDING</div><div class="meta"><h3>Custom Suppressor</h3><div class="price">FROM $850.00</div><div class="badge">Transfer Only</div></div></div>
+      <div class="product-card"><div class="ph">IMG — PENDING</div><div class="meta"><h3>Custom Rifle Build</h3><div class="price">QUOTE</div><div class="badge">Transfer Only</div></div></div>
+      <div class="product-card"><div class="ph">IMG — PENDING</div><div class="meta"><h3>Scope Mount, Billet</h3><div class="price">$129.00</div></div></div>
+      <div class="product-card"><div class="ph">IMG — PENDING</div><div class="meta"><h3>Game Processing Kit</h3><div class="price">$74.00</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="custom-work">
+  <div class="wrap">
+    <p class="kicker">Custom Work</p>
+    <h2>From Consult to Transfer</h2>
+    <p class="section-lede">One shop handles the whole build — you talk to the person running the machine.</p>
+    <div class="process-strip">
+      <div class="process-step"><div class="num">STEP 01</div><h3>Consult</h3><p>Tell us the platform, use case, and constraints. We scope it honestly.</p></div>
+      <div class="process-step"><div class="num">STEP 02</div><h3>Design</h3><p>CAD and prototype passes — 3D-printed mockups before any metal is cut.</p></div>
+      <div class="process-step"><div class="num">STEP 03</div><h3>Machine</h3><p>Cut, welded, engraved, and finished in-house on our own equipment.</p></div>
+      <div class="process-step"><div class="num">STEP 04</div><h3>Transfer</h3><p>Regulated builds complete through compliant in-shop transfer and paperwork.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <p class="kicker">Contact</p>
+    <h2>Come By The Shop</h2>
+    <div class="contact-grid">
+      <div class="contact-plate">
+        <div><div class="label">Address</div><div class="value">166 Loch Lomond Dr, League City, TX 77573</div></div>
+        <div><div class="label">Phone</div><div class="value">PENDING — CLIENT TO PROVIDE</div></div>
+        <div><div class="label">Email</div><div class="value"><a href="mailto:mike@southeasttexasmfg.com">mike@southeasttexasmfg.com</a></div></div>
+        <div><div class="label">FFL License</div><div class="value">5-76-167-07-8K-07838</div></div>
+      </div>
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps?q=166%20Loch%20Lomond%20Dr%2C%20League%20City%2C%20TX%2077573&amp;output=embed" loading="lazy" title="Map to Texas Hunting Tools, League City TX"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copyright">&copy; 2026 Texas Hunting Tools LLC &middot; League City, TX</div>
+    <ul class="footer-links">
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">FFL Info</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="../wp-theme/tx-hunting-tools/assets/js/nav.js"></script>
+</body>
+</html>
