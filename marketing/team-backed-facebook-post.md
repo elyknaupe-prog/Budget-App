@@ -55,6 +55,25 @@ Takes 2–3 minutes, no commitment. Happy to answer questions in the comments. Q
 
 Thanks, y'all 🙏
 
+## Post — Barbershop Facebook Group (copy-paste)
+
+💈 Barbers — quick question: how many of your clients are sports parents?
+
+I run Team Backed, and we put local businesses on youth sports jerseys. Barbershops might be the best fit we've seen: you're already where the community gathers, half your Saturday chairs are kids heading to or from a game, and a fresh cut before team photos is basically tradition.
+
+Here's how it works:
+💈 Your shop's logo on a local team's jerseys or banner
+📱 Tagged in the team's posts all season — game highlights, team photos, the works
+📸 A monthly report with pictures of your logo in action
+
+We just set up our first sponsors — one local business's logo is going on a 10U football team's jerseys right now. Sponsorships start around $300/month, which is a couple of cuts a day to have every sports family in the neighborhood seeing your name each weekend.
+
+If you've got a shop and want a team repping it, drop your info here and I'll match you with a team near you:
+
+👉 https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+Takes 2–3 minutes, no commitment. Happy to answer anything in the comments. 💈🏈
+
 ## Cold outreach email — local businesses near a team (template)
 
 Subject: Your logo on [TEAM NAME]'s jerseys — [CITY]'s youth [SPORT] team is looking for a local sponsor
