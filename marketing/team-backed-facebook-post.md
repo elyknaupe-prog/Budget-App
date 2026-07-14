@@ -57,22 +57,21 @@ Thanks, y'all 🙏
 
 ## Post — Barbershop Facebook Group (copy-paste)
 
-💈 Barbers — quick question: how many of your clients are sports parents?
+Barbers, a quick question: how many of your clients are sports parents?
 
-I run Team Backed, and we put local businesses on youth sports jerseys. Barbershops might be the best fit we've seen: you're already where the community gathers, half your Saturday chairs are kids heading to or from a game, and a fresh cut before team photos is basically tradition.
+I run Team Backed. We connect local businesses with youth sports teams looking for jersey sponsors. Barbershops are one of the best fits we have seen. Your shop is already a community gathering place, and many of the kids in your chairs on a Saturday are heading to or from a game.
 
-Here's how it works:
-💈 Your shop's logo on a local team's jerseys or banner
-📱 Tagged in the team's posts all season — game highlights, team photos, the works
-📸 A monthly report with pictures of your logo in action
+Here is how it works:
 
-We just set up our first sponsors — one local business's logo is going on a 10U football team's jerseys right now. Sponsorships start around $300/month, which is a couple of cuts a day to have every sports family in the neighborhood seeing your name each weekend.
+Your shop's logo goes on a local team's jerseys or banner. The team tags your shop in its posts all season, including game highlights and team photos. You receive a monthly report with pictures of your logo in action.
 
-If you've got a shop and want a team repping it, drop your info here and I'll match you with a team near you:
+We recently set up our first sponsors, and one local business's logo is going on a 10U football team's jerseys right now. Sponsorships start around $300 per month, which works out to a couple of haircuts a day in exchange for every sports family in the neighborhood seeing your name each weekend.
 
-👉 https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+If you own a shop and want a team representing it, fill out the form below and I will match you with a team near you:
 
-Takes 2–3 minutes, no commitment. Happy to answer anything in the comments. 💈🏈
+https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+It takes two to three minutes and there is no commitment. I am happy to answer any questions in the comments.
 
 ## Cold outreach email — local businesses near a team (template)
 
