@@ -73,6 +73,24 @@ https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJ
 
 It takes two to three minutes and there is no commitment. I am happy to answer any questions in the comments.
 
+## Post — Gulf Shores AL: sponsor in hand, looking for a 7v7 team (copy-paste)
+
+Coaches and team parents in the Gulf Shores area, this one is for you.
+
+I run Team Backed. We connect youth sports teams with businesses that sponsor them, and right now I have a sponsor interested in backing a 7 on 7 team in the Gulf Shores area.
+
+Here is what the team gets:
+
+Monthly sponsorship money toward your season, a business that wants its logo on your jerseys or banner, and all the payment handling done for you. Your side of the deal is simple: put the logo on, tag the sponsor when you post, and send a few photos each month. We provide the template and it takes about 20 minutes a month.
+
+If you coach or help run a 7 on 7 team around Gulf Shores, fill this out and I will reach out:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+It takes 2 to 3 minutes. Other sports and nearby towns are welcome to fill it out too. If the fit is not right for this sponsor, you go to the top of the list for the next one.
+
+Happy to answer questions in the comments.
+
 ## Cold outreach email — local businesses near a team (template)
 
 Subject: Your logo on [TEAM NAME]'s jerseys — [CITY]'s youth [SPORT] team is looking for a local sponsor
