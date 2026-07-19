@@ -107,6 +107,26 @@ https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJ
 
 It takes 2 to 3 minutes. Any sport, any age group. Happy to answer questions in the comments.
 
+## Post — Gulf Shores AL businesses that sponsor teams (copy-paste)
+
+Gulf Shores and Baldwin County business owners, this one is for you.
+
+I run Team Backed. We put local businesses on youth sports jerseys, and right now I am lining up teams in the Gulf Shores area, starting with 7 on 7 football.
+
+Here is how it works:
+
+Your logo goes on a local team's jerseys or banner. The team tags your business in its posts all season, game highlights, team photos, all of it. You get a monthly report with pictures of your logo in action, so you always know what your sponsorship is doing.
+
+Sponsorships start around $300 a month. For a business here, that is every sports family in Baldwin County seeing your name at the fields each weekend, plus the tourists who pack those tournaments all summer.
+
+We just set up our first sponsors and one business's logo is going on a 10U football team's jerseys right now.
+
+If you want a local team repping your business, fill this out and I will match you with one:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+It takes 2 to 3 minutes and there is no commitment. Happy to answer questions in the comments.
+
 ## Cold outreach email — local businesses near a team (template)
 
 Subject: Your logo on [TEAM NAME]'s jerseys — [CITY]'s youth [SPORT] team is looking for a local sponsor
