@@ -91,6 +91,22 @@ It takes 2 to 3 minutes. Other sports and nearby towns are welcome to fill it ou
 
 Happy to answer questions in the comments.
 
+## Post — Gulf Shores AL booster clubs (copy-paste)
+
+Booster club folks in the Gulf Shores and Baldwin County area, quick one for you.
+
+I run Team Backed. We connect youth and school sports programs with businesses that sponsor them. The sponsor pays monthly, their logo goes on jerseys or a banner, and the program gets a steady check instead of another round of candy bars and car washes.
+
+Right now I have a sponsor interested in backing a 7 on 7 team in the Gulf Shores area, and I am building a list of local programs for the businesses coming behind them.
+
+If you help run a booster club, you already know the hard part is not finding families who care. It is finding businesses willing to write a check every month. That is the part we do. You handle what you already do well: the logo placement, tagging the sponsor in your posts, and a few photos a month. We provide the template and handle the money side, including making sure the program actually gets paid.
+
+If your program could use a monthly sponsor, fill this out and I will reach out:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+It takes 2 to 3 minutes. Any sport, any age group. Happy to answer questions in the comments.
+
 ## Cold outreach email — local businesses near a team (template)
 
 Subject: Your logo on [TEAM NAME]'s jerseys — [CITY]'s youth [SPORT] team is looking for a local sponsor
