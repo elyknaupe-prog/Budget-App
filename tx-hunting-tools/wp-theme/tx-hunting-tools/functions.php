@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TXHT_VERSION', '1.2.0' );
+define( 'TXHT_VERSION', '1.3.0' );
 
 require get_template_directory() . '/inc/customizer.php';
 

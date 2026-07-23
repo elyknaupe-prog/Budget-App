@@ -58,8 +58,16 @@ admin that cannot be done from code. Work top to bottom.
    *Set expectations with the client: the store section will be close to, but
    not pixel-identical with, the rest of the site — Ecwid limits styling
    control vs. a native build, especially at checkout.*
-6. Ecwid admin → Catalog → Categories:
-   `Suppressors`, `Custom Firearms`, `Optics`, `Apparel`, `Field Tools`.
+6. Ecwid admin → Catalog → Categories — mirror the old site's shop
+   structure:
+   `Suppressors`, `Merchandise`, `Optic & Slide Cuts`, `Gunsmith Work`,
+   `Muzzle Devices` (add others to match the live site as needed, e.g.
+   `Custom Firearms`).
+   Service categories (Optic & Slide Cuts, Gunsmith Work) are sold as
+   Ecwid products too: create the service as a product, disable shipping
+   on it, and state in the description how the customer gets the work
+   done (mail in a slide, drop off in-shop, etc.). Ecwid checkout takes
+   the payment; fulfillment is described per product.
 7. **Regulated products** (everything in Suppressors / Custom Firearms):
    - Product → Shipping & Pickup → **disable all shipping methods**.
    - Enable **in-store pickup** (166 Loch Lomond Dr, League City, TX 77573).

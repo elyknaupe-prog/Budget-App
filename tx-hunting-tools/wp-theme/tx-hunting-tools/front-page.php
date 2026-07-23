@@ -14,8 +14,8 @@ get_header();
 		<h1><?php echo esc_html( txht_opt( 'txht_hero_headline' ) ); ?> <em><?php echo esc_html( txht_opt( 'txht_hero_accent' ) ); ?></em></h1>
 		<p class="sub"><?php echo esc_html( txht_opt( 'txht_hero_sub' ) ); ?></p>
 		<div class="hero-ctas">
-			<a class="btn btn--solid" href="#shop">Shop Now</a>
-			<a class="btn" href="#custom-work">Start a Custom Build</a>
+			<a class="btn btn--solid" href="<?php echo esc_url( txht_opt( 'txht_cta1_url' ) ); ?>"><?php echo esc_html( txht_opt( 'txht_cta1_label' ) ); ?></a>
+			<a class="btn" href="<?php echo esc_url( txht_opt( 'txht_cta2_url' ) ); ?>"><?php echo esc_html( txht_opt( 'txht_cta2_label' ) ); ?></a>
 		</div>
 
 		<div class="info-plate" aria-label="Shop information">
@@ -25,11 +25,11 @@ get_header();
 			</div>
 			<div>
 				<div class="label">Location</div>
-				<div class="value">League City, TX</div>
+				<div class="value"><?php echo esc_html( txht_opt( 'txht_plate_location' ) ); ?></div>
 			</div>
 			<div>
 				<div class="label">Shop Floor</div>
-				<div class="value">CNC &middot; LATHE &middot; LASER &middot; WELD</div>
+				<div class="value"><?php echo esc_html( txht_opt( 'txht_plate_floor' ) ); ?></div>
 			</div>
 			<div>
 				<div class="label">Season</div>
@@ -46,42 +46,14 @@ get_header();
 		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_caps_lede' ) ); ?></p>
 
 		<div class="cap-grid">
+			<?php for ( $i = 1; $i <= 6; $i++ ) : ?>
 			<div class="cap-cell">
-				<div class="idx">01 / CNC</div>
-				<h3>5-Axis CNC Milling</h3>
-				<p>Baffle stacks, tube bodies, receivers, and one-off fixtures cut from billet.</p>
-				<div class="spec">5-AXIS &middot; ALUMINUM / TI / STAINLESS</div>
+				<div class="idx"><?php echo esc_html( txht_opt( "txht_cap{$i}_idx" ) ); ?></div>
+				<h3><?php echo esc_html( txht_opt( "txht_cap{$i}_title" ) ); ?></h3>
+				<p><?php echo esc_html( txht_opt( "txht_cap{$i}_desc" ) ); ?></p>
+				<div class="spec"><?php echo esc_html( txht_opt( "txht_cap{$i}_spec" ) ); ?></div>
 			</div>
-			<div class="cap-cell">
-				<div class="idx">02 / LATHE</div>
-				<h3>Manual Lathe Work</h3>
-				<p>Barrel threading, muzzle-device fitment, chamber and crown work.</p>
-				<div class="spec">THREADING &middot; TURNING &middot; FITMENT</div>
-			</div>
-			<div class="cap-cell">
-				<div class="idx">03 / LASER</div>
-				<h3>Laser Engraving</h3>
-				<p>ATF-compliant maker marks, serials, and custom graphics on metal.</p>
-				<div class="spec">FORM 1 / FORM 2 MARKING</div>
-			</div>
-			<div class="cap-cell">
-				<div class="idx">04 / WELD</div>
-				<h3>Welding</h3>
-				<p>TIG work on fixtures, brackets, blinds, and field-equipment repair.</p>
-				<div class="spec">TIG &middot; STEEL / ALUMINUM</div>
-			</div>
-			<div class="cap-cell">
-				<div class="idx">05 / PRINT</div>
-				<h3>3D Printing</h3>
-				<p>Rapid prototyping for grips, guards, and custom-build mockups before metal.</p>
-				<div class="spec">PROTOTYPE &rarr; PRODUCTION</div>
-			</div>
-			<div class="cap-cell">
-				<div class="idx">06 / FFL</div>
-				<h3>FFL Transfers</h3>
-				<p>In-shop transfers and NFA item handling under our 07/02 license.</p>
-				<div class="spec"><?php echo esc_html( txht_opt( 'txht_ffl' ) ); ?></div>
-			</div>
+			<?php endfor; ?>
 		</div>
 	</div>
 </section>
@@ -93,8 +65,8 @@ get_header();
 		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_shop_lede' ) ); ?></p>
 
 		<div class="shop-note">
-			<strong>Transfer Only</strong>
-			<span>Regulated items (suppressors, firearms) do not ship direct. Fulfillment is in-store pickup or FFL transfer — details on each product page.</span>
+			<strong><?php echo esc_html( txht_opt( 'txht_shop_note_label' ) ); ?></strong>
+			<span><?php echo esc_html( txht_opt( 'txht_shop_note_text' ) ); ?></span>
 		</div>
 
 		<div class="ecwid-shell">
@@ -110,26 +82,13 @@ get_header();
 		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_process_lede' ) ); ?></p>
 
 		<div class="process-strip">
+			<?php for ( $i = 1; $i <= 4; $i++ ) : ?>
 			<div class="process-step">
-				<div class="num">STEP 01</div>
-				<h3>Consult</h3>
-				<p>Tell us the platform, use case, and constraints. We scope it honestly.</p>
+				<div class="num">STEP 0<?php echo (int) $i; ?></div>
+				<h3><?php echo esc_html( txht_opt( "txht_step{$i}_title" ) ); ?></h3>
+				<p><?php echo esc_html( txht_opt( "txht_step{$i}_desc" ) ); ?></p>
 			</div>
-			<div class="process-step">
-				<div class="num">STEP 02</div>
-				<h3>Design</h3>
-				<p>CAD and prototype passes — 3D-printed mockups before any metal is cut.</p>
-			</div>
-			<div class="process-step">
-				<div class="num">STEP 03</div>
-				<h3>Machine</h3>
-				<p>Cut, welded, engraved, and finished in-house on our own equipment.</p>
-			</div>
-			<div class="process-step">
-				<div class="num">STEP 04</div>
-				<h3>Transfer</h3>
-				<p>Regulated builds complete through compliant in-shop transfer and paperwork.</p>
-			</div>
+			<?php endfor; ?>
 		</div>
 	</div>
 </section>

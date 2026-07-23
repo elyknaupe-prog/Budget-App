@@ -40,6 +40,6 @@
 		}
 		?>
 
-		<a class="btn nav-cta" href="<?php echo esc_url( home_url( '/#contact' ) ); ?>">Book Appointment</a>
+		<a class="btn nav-cta" href="<?php echo esc_url( txht_opt( 'txht_nav_cta_url' ) ); ?>"><?php echo esc_html( txht_opt( 'txht_nav_cta_label' ) ); ?></a>
 	</div>
 </nav>
