@@ -41,8 +41,8 @@ get_header();
 
 <section id="capabilities">
 	<div class="wrap">
-		<p class="kicker">Capabilities</p>
-		<h2>The Nameplate</h2>
+		<p class="kicker"><?php echo esc_html( txht_opt( 'txht_caps_kicker' ) ); ?></p>
+		<h2><?php echo esc_html( txht_opt( 'txht_caps_heading' ) ); ?></h2>
 		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_caps_lede' ) ); ?></p>
 
 		<div class="cap-grid">
@@ -88,8 +88,8 @@ get_header();
 
 <section id="shop">
 	<div class="wrap">
-		<p class="kicker">Shop</p>
-		<h2>Gear &amp; Builds</h2>
+		<p class="kicker"><?php echo esc_html( txht_opt( 'txht_shop_kicker' ) ); ?></p>
+		<h2><?php echo esc_html( txht_opt( 'txht_shop_heading' ) ); ?></h2>
 		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_shop_lede' ) ); ?></p>
 
 		<div class="shop-note">
@@ -105,8 +105,8 @@ get_header();
 
 <section id="custom-work">
 	<div class="wrap">
-		<p class="kicker">Custom Work</p>
-		<h2>From Consult to Transfer</h2>
+		<p class="kicker"><?php echo esc_html( txht_opt( 'txht_process_kicker' ) ); ?></p>
+		<h2><?php echo esc_html( txht_opt( 'txht_process_heading' ) ); ?></h2>
 		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_process_lede' ) ); ?></p>
 
 		<div class="process-strip">
@@ -136,8 +136,8 @@ get_header();
 
 <section id="contact">
 	<div class="wrap">
-		<p class="kicker">Contact</p>
-		<h2>Come By The Shop</h2>
+		<p class="kicker"><?php echo esc_html( txht_opt( 'txht_contact_kicker' ) ); ?></p>
+		<h2><?php echo esc_html( txht_opt( 'txht_contact_heading' ) ); ?></h2>
 
 		<div class="contact-grid">
 			<div class="contact-plate">
