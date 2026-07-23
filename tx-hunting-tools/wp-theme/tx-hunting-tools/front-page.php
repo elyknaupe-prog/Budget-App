@@ -10,14 +10,9 @@ get_header();
 
 <section class="hero">
 	<div class="wrap">
-		<p class="kicker">07/02 FFL Manufacturer — League City, Texas</p>
-		<h1>Machined for the field. <em>Built in-house.</em></h1>
-		<p class="sub">
-			Custom suppressors, firearm work, and precision-machined hunting gear
-			out of our own shop — 5-axis CNC, manual lathes, laser engraving,
-			welding, and 3D printing under one roof. Regulated items transfer
-			through our League City shop; gear ships nationwide.
-		</p>
+		<p class="kicker"><?php echo esc_html( txht_opt( 'txht_hero_kicker' ) ); ?></p>
+		<h1><?php echo esc_html( txht_opt( 'txht_hero_headline' ) ); ?> <em><?php echo esc_html( txht_opt( 'txht_hero_accent' ) ); ?></em></h1>
+		<p class="sub"><?php echo esc_html( txht_opt( 'txht_hero_sub' ) ); ?></p>
 		<div class="hero-ctas">
 			<a class="btn btn--solid" href="#shop">Shop Now</a>
 			<a class="btn" href="#custom-work">Start a Custom Build</a>
@@ -48,10 +43,7 @@ get_header();
 	<div class="wrap">
 		<p class="kicker">Capabilities</p>
 		<h2>The Nameplate</h2>
-		<p class="section-lede">
-			Everything we sell is backed by the machines it was made on.
-			No drop-shipped catalog — this is the actual floor.
-		</p>
+		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_caps_lede' ) ); ?></p>
 
 		<div class="cap-grid">
 			<div class="cap-cell">
@@ -98,11 +90,7 @@ get_header();
 	<div class="wrap">
 		<p class="kicker">Shop</p>
 		<h2>Gear &amp; Builds</h2>
-		<p class="section-lede">
-			Optics, apparel, and field tools ship straight to you. Suppressors and
-			custom firearms are transfer-only — pick up in-shop or arrange an FFL
-			transfer after checkout.
-		</p>
+		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_shop_lede' ) ); ?></p>
 
 		<div class="shop-note">
 			<strong>Transfer Only</strong>
@@ -119,9 +107,7 @@ get_header();
 	<div class="wrap">
 		<p class="kicker">Custom Work</p>
 		<h2>From Consult to Transfer</h2>
-		<p class="section-lede">
-			One shop handles the whole build — you talk to the person running the machine.
-		</p>
+		<p class="section-lede"><?php echo esc_html( txht_opt( 'txht_process_lede' ) ); ?></p>
 
 		<div class="process-strip">
 			<div class="process-step">
