@@ -3,7 +3,7 @@ Theme Name:  TX Hunting Tools
 Theme URI:   https://tx-hunting-tools.com/
 Author:      Texas Hunting Tools LLC
 Description: Custom dark/brass industrial theme for Texas Hunting Tools — an 07/02 FFL machine shop in League City, TX. Wraps an embedded Ecwid store (Ecwid Ecommerce Shopping Cart plugin). Not WooCommerce-compatible by design.
-Version:     1.3.0
+Version:     1.4.0
 License:     GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: txht
@@ -294,14 +294,59 @@ h2 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 18px; }
   margin-bottom: 5px;
 }
 .contact-plate .value { font-family: var(--mono); font-size: 14px; }
-.map-frame { border: 1px solid var(--line); }
-.map-frame iframe {
-  display: block;
-  width: 100%;
-  height: 360px;
-  border: 0;
-  filter: grayscale(1) invert(0.9) contrast(0.9);
+/* Appointment-request form */
+.book-form {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 28px;
+  display: grid;
+  gap: 18px;
 }
+.book-form .field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 7px;
+}
+.book-form input,
+.book-form select,
+.book-form textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  padding: 12px 14px;
+}
+.book-form input::placeholder,
+.book-form textarea::placeholder { color: var(--steel); opacity: 0.7; }
+.book-form input:focus,
+.book-form select:focus,
+.book-form textarea:focus {
+  outline: 1px solid var(--brass);
+  border-color: var(--brass);
+}
+.book-form button { justify-self: start; }
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  height: 1px; width: 1px; overflow: hidden;
+}
+.form-notice {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 24px 28px;
+  font-family: var(--mono);
+  font-size: 14px;
+  align-self: start;
+}
+.form-notice--ok { border-left: 3px solid var(--brass); color: var(--text); }
+.form-notice--err { border-left: 3px solid var(--rust); color: var(--text); }
 
 /* ------------------------------------------------------------------
    Footer

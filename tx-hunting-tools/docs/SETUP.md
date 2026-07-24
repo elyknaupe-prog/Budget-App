@@ -98,8 +98,11 @@ admin that cannot be done from code. Work top to bottom.
       and swap in anything the client wants kept verbatim.)*
 - [ ] Replace placeholder product photography as real images arrive
       (open question #4).
-- [ ] Google Map is already embedded (keyless `maps?q=…&output=embed` iframe
-      pointed at the League City address).
+- [ ] The contact section has a built-in appointment-request form (name,
+      phone, service needed, details). Submissions email the address set in
+      Customizer → Shop Details. **Test it once after launch**; if the email
+      doesn't arrive (shared-host PHP mail often lands in spam), install the
+      "WP Mail SMTP" plugin and route through a real mailbox.
 - [ ] Add the phone number via Customizer once provided.
 
 ## Phase 6 — Compliance & legal

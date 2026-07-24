@@ -100,10 +100,6 @@ get_header();
 
 		<div class="contact-grid">
 			<div class="contact-plate">
-				<div>
-					<div class="label">Address</div>
-					<div class="value"><?php echo esc_html( txht_opt( 'txht_address' ) ); ?></div>
-				</div>
 				<?php if ( txht_opt( 'txht_phone' ) ) : ?>
 				<div>
 					<div class="label">Phone</div>
@@ -120,13 +116,45 @@ get_header();
 				</div>
 			</div>
 
-			<div class="map-frame">
-				<iframe
-					src="<?php echo esc_url( txht_map_src() ); ?>"
-					loading="lazy"
-					referrerpolicy="no-referrer-when-downgrade"
-					title="Map to Texas Hunting Tools, League City TX"></iframe>
-			</div>
+			<?php if ( isset( $_GET['booked'] ) ) : ?>
+				<?php if ( '1' === $_GET['booked'] ) : ?>
+					<div class="form-notice form-notice--ok">Request received — we&rsquo;ll call you to confirm a time.</div>
+				<?php else : ?>
+					<div class="form-notice form-notice--err">Something went wrong sending your request. Please call or email us instead.</div>
+				<?php endif; ?>
+			<?php else : ?>
+			<form class="book-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="txht_book">
+				<?php wp_nonce_field( 'txht_book', 'txht_book_nonce' ); ?>
+				<p class="hp-field"><label>Leave this field empty<input type="text" name="txht_website" tabindex="-1" autocomplete="off"></label></p>
+
+				<div class="field">
+					<label for="bk-name">Name *</label>
+					<input id="bk-name" type="text" name="txht_name" required>
+				</div>
+				<div class="field">
+					<label for="bk-phone">Phone Number *</label>
+					<input id="bk-phone" type="tel" name="txht_phone" required placeholder="We&rsquo;ll call to confirm your appointment">
+				</div>
+				<div class="field">
+					<label for="bk-service">What do you need?</label>
+					<select id="bk-service" name="txht_service">
+						<option>Suppressor</option>
+						<option>Custom build</option>
+						<option>Gunsmith work</option>
+						<option>Optic / slide cut</option>
+						<option>Muzzle device</option>
+						<option>FFL transfer</option>
+						<option>Other</option>
+					</select>
+				</div>
+				<div class="field">
+					<label for="bk-msg">Details (optional)</label>
+					<textarea id="bk-msg" name="txht_message" rows="4"></textarea>
+				</div>
+				<button type="submit" class="btn btn--solid">Request Appointment</button>
+			</form>
+			<?php endif; ?>
 		</div>
 	</div>
 </section>

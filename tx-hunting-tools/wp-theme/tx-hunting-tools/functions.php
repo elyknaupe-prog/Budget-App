@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TXHT_VERSION', '1.3.0' );
+define( 'TXHT_VERSION', '1.4.0' );
 
 require get_template_directory() . '/inc/customizer.php';
 
@@ -76,8 +76,47 @@ function txht_render_store() {
 	echo '<div class="ecwid-placeholder">STOREFRONT PENDING — install the “Ecwid Ecommerce Shopping Cart” plugin and connect the existing Ecwid account. See docs/SETUP.md.</div>';
 }
 
-/** Google Maps embed for the shop address (no API key required). */
-function txht_map_src() {
-	$address = txht_opt( 'txht_address' );
-	return 'https://www.google.com/maps?q=' . rawurlencode( $address ) . '&output=embed';
+/**
+ * Appointment-request form handler. Emails the request to the shop's
+ * contact email (Customizer → Shop Details) and redirects back to the
+ * contact section with a success/failure flag.
+ */
+function txht_handle_booking() {
+	if ( ! isset( $_POST['txht_book_nonce'] ) || ! wp_verify_nonce( $_POST['txht_book_nonce'], 'txht_book' ) ) {
+		wp_safe_redirect( home_url( '/?booked=0#contact' ) );
+		exit;
+	}
+
+	// Honeypot: real visitors leave it empty; bots fill it in.
+	if ( ! empty( $_POST['txht_website'] ) ) {
+		wp_safe_redirect( home_url( '/?booked=1#contact' ) );
+		exit;
+	}
+
+	$name    = sanitize_text_field( wp_unslash( $_POST['txht_name'] ?? '' ) );
+	$phone   = sanitize_text_field( wp_unslash( $_POST['txht_phone'] ?? '' ) );
+	$service = sanitize_text_field( wp_unslash( $_POST['txht_service'] ?? '' ) );
+	$message = sanitize_textarea_field( wp_unslash( $_POST['txht_message'] ?? '' ) );
+
+	if ( '' === $name || '' === $phone ) {
+		wp_safe_redirect( home_url( '/?booked=0#contact' ) );
+		exit;
+	}
+
+	$body = "Appointment request from the website:\n\n"
+		. "Name:    {$name}\n"
+		. "Phone:   {$phone}\n"
+		. "Needs:   {$service}\n\n"
+		. ( $message ? "Details:\n{$message}\n" : '' );
+
+	$sent = wp_mail(
+		txht_opt( 'txht_email' ),
+		'Appointment request — ' . $name,
+		$body
+	);
+
+	wp_safe_redirect( home_url( ( $sent ? '/?booked=1' : '/?booked=0' ) . '#contact' ) );
+	exit;
 }
+add_action( 'admin_post_txht_book', 'txht_handle_booking' );
+add_action( 'admin_post_nopriv_txht_book', 'txht_handle_booking' );

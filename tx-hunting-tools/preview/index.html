@@ -123,14 +123,19 @@
     <h2>Come By The Shop</h2>
     <div class="contact-grid">
       <div class="contact-plate">
-        <div><div class="label">Address</div><div class="value">166 Loch Lomond Dr, League City, TX 77573</div></div>
         <div><div class="label">Phone</div><div class="value">PENDING — CLIENT TO PROVIDE</div></div>
         <div><div class="label">Email</div><div class="value"><a href="mailto:mike@southeasttexasmfg.com">mike@southeasttexasmfg.com</a></div></div>
         <div><div class="label">FFL License</div><div class="value">5-76-167-07-8K-07838</div></div>
       </div>
-      <div class="map-frame">
-        <iframe src="https://www.google.com/maps?q=166%20Loch%20Lomond%20Dr%2C%20League%20City%2C%20TX%2077573&amp;output=embed" loading="lazy" title="Map to Texas Hunting Tools, League City TX"></iframe>
-      </div>
+      <form class="book-form" onsubmit="return false">
+        <div class="field"><label for="bk-name">Name *</label><input id="bk-name" type="text" required></div>
+        <div class="field"><label for="bk-phone">Phone Number *</label><input id="bk-phone" type="tel" required placeholder="We&rsquo;ll call to confirm your appointment"></div>
+        <div class="field"><label for="bk-service">What do you need?</label>
+          <select id="bk-service"><option>Suppressor</option><option>Custom build</option><option>Gunsmith work</option><option>Optic / slide cut</option><option>Muzzle device</option><option>FFL transfer</option><option>Other</option></select>
+        </div>
+        <div class="field"><label for="bk-msg">Details (optional)</label><textarea id="bk-msg" rows="4"></textarea></div>
+        <button type="submit" class="btn btn--solid">Request Appointment</button>
+      </form>
     </div>
   </div>
 </section>
