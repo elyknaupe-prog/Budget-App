@@ -72,17 +72,31 @@ admin that cannot be done from code. Work top to bottom.
    *Set expectations with the client: the store section will be close to, but
    not pixel-identical with, the rest of the site — Ecwid limits styling
    control vs. a native build, especially at checkout.*
-6. Ecwid admin → Catalog → Categories — mirror the old site's shop
-   structure:
-   `Suppressors`, `Merchandise`, `Optic & Slide Cuts`, `Gunsmith Work`,
-   `Muzzle Devices` (add others to match the live site as needed, e.g.
-   `Custom Firearms`).
-   Service categories (Optic & Slide Cuts, Gunsmith Work) are sold as
-   Ecwid products too: create the service as a product, disable shipping
-   on it, and state in the description how the customer gets the work
-   done (mail in a slide, drop off in-shop, etc.). Ecwid checkout takes
-   the payment; fulfillment is described per product.
-7. **Regulated products** (everything in Suppressors / Custom Firearms):
+6. Ecwid admin → Catalog → Categories — create these, in order:
+   1. `Suppressors`  ⚠️ regulated — transfer only
+   2. `Optic & Slide Cuts`  (service)
+   3. `Gunsmith Work`  (service)
+   4. `Muzzle & Suppressor Accessories`
+   5. `Laser Engraved`
+   6. `Dealer Application`  (see note below — really a form, not a shippable
+      product)
+   7. `Guns & Receivers`  ⚠️ regulated — transfer only
+   8. `Custom Cut Foam for Gun Case`
+   9. `Merchandise`
+
+   **Service categories** (Optic & Slide Cuts, Gunsmith Work) are sold as
+   Ecwid products: create the service as a product, disable shipping on it,
+   and state in the description how the customer gets the work done (mail in
+   a slide, drop off in-shop, etc.). Ecwid checkout takes the payment;
+   fulfillment is described per product.
+
+   **Dealer Application** isn't a physical product. Cleanest is to make it a
+   single $0 product whose description links to (or embeds) an application —
+   e.g. a form built with a free plugin like Fluent Forms or WPForms on a
+   dedicated WP page, then point the Ecwid product there. Alternatively skip
+   Ecwid for it entirely and just add a "Dealer Application" WP page with the
+   form; tell me which and I'll wire it up.
+7. **Regulated products** (everything in Suppressors / Guns & Receivers):
    - Product → Shipping & Pickup → **disable all shipping methods**.
    - Enable **in-store pickup** (166 Loch Lomond Dr, League City, TX 77573).
    - In the product description, add the standing line: *"Transfer only — this

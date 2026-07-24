@@ -138,10 +138,14 @@ get_header();
 					<label for="bk-service">What do you need?</label>
 					<select id="bk-service" name="txht_service">
 						<option>Suppressor</option>
-						<option>Custom build</option>
-						<option>Gunsmith work</option>
 						<option>Optic / slide cut</option>
-						<option>Muzzle device</option>
+						<option>Gunsmith work</option>
+						<option>Muzzle / suppressor accessory</option>
+						<option>Laser engraving</option>
+						<option>Dealer application</option>
+						<option>Gun / receiver</option>
+						<option>Custom cut foam</option>
+						<option>Merchandise</option>
 						<option>FFL transfer</option>
 						<option>Other</option>
 					</select>
