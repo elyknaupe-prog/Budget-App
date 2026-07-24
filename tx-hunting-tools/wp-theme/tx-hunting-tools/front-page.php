@@ -69,9 +69,7 @@ get_header();
 			<span><?php echo esc_html( txht_opt( 'txht_shop_note_text' ) ); ?></span>
 		</div>
 
-		<div class="ecwid-shell">
-			<?php txht_render_store(); ?>
-		</div>
+		<p><a class="btn btn--solid" href="<?php echo esc_url( txht_opt( 'txht_shop_btn_url' ) ); ?>"><?php echo esc_html( txht_opt( 'txht_shop_btn_label' ) ); ?></a></p>
 	</div>
 </section>
 

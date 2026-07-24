@@ -28,9 +28,19 @@ admin that cannot be done from code. Work top to bottom.
 
 1. Settings → Reading → homepage displays a **static page**; create an empty
    page "Home" and assign it (the theme's `front-page.php` renders the layout).
-2. Create pages: **Terms**, **Privacy**, **FFL Info** (slug must be
-   `ffl-info` — the theme ships a dedicated template keyed to that slug with
-   the license plate and transfer-process copy built in).
+2. Create pages:
+   - **Shop** (slug `shop`) — the theme auto-applies the "Shop — Full Store"
+     template: a dark-themed page that embeds the full Ecwid store. Leave the
+     body empty (or add intro copy above the store). This is the separate
+     page the nav "Shop" link and the homepage "Browse the Full Store" button
+     point to.
+   - **About** (slug `about`) — auto-applies the "About" template; write the
+     About copy in the normal editor.
+   - **Terms**, **Privacy**, **FFL Info** (slug must be `ffl-info` — the theme
+     ships a dedicated template keyed to that slug with the license plate and
+     transfer-process copy built in).
+   *(For any page, the template also shows under Page Attributes → Template if
+   you ever need to assign it manually.)*
 3. Menus: build a "Primary" menu (Shop / Capabilities / Custom Work / Contact
    as custom links to `/#shop` etc.) and a "Footer" menu (Terms / Privacy /
    FFL Info). The theme falls back to hard-coded links if no menu is assigned.
@@ -55,6 +65,10 @@ admin that cannot be done from code. Work top to bottom.
    font Inter. Then paste `assets/css/ecwid-skin.css` into Ecwid's custom-CSS
    box (Design → Custom CSS) so the cart/checkout screens that render outside
    the page DOM pick up the overrides too.
+   **This is what fixes the bright-green category grid** — that color is
+   Ecwid's default storefront theme, set here, not in the WordPress theme.
+   The Shop page wraps the store in the dark site frame, but the store's own
+   background/tile colors must be changed in these Ecwid Design settings.
    *Set expectations with the client: the store section will be close to, but
    not pixel-identical with, the rest of the site — Ecwid limits styling
    control vs. a native build, especially at checkout.*

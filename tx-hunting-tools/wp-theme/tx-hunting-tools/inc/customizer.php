@@ -44,13 +44,20 @@ function txht_defaults() {
 		'txht_contact_kicker'  => 'Contact',
 		'txht_contact_heading' => 'Come By The Shop',
 
+		// Shop page (separate /shop/ page template).
+		'txht_shoppage_kicker'  => 'Shop',
+		'txht_shoppage_heading' => 'The Store',
+		'txht_shoppage_tagline' => 'Make your next hunt silent. Suppressors, gunsmith work, optic & slide cuts, muzzle devices, and gear — machined and finished in-house.',
+
 		// Buttons & Links.
 		'txht_cta1_label'      => 'Shop Now',
-		'txht_cta1_url'        => '#shop',
+		'txht_cta1_url'        => '/shop/',
 		'txht_cta2_label'      => 'Start a Custom Build',
 		'txht_cta2_url'        => '#custom-work',
 		'txht_nav_cta_label'   => 'Book Appointment',
 		'txht_nav_cta_url'     => '#contact',
+		'txht_shop_btn_label'  => 'Browse the Full Store',
+		'txht_shop_btn_url'    => '/shop/',
 
 		// Capabilities Grid (6 tiles × tag/title/description/spec).
 		'txht_cap1_idx'        => '01 / CNC',
@@ -136,12 +143,18 @@ function txht_customize_register( $wp_customize ) {
 		'txht_contact_kicker'  => array( __( 'Contact small label', 'txht' ), 'txht_homepage_text', 'text' ),
 		'txht_contact_heading' => array( __( 'Contact heading', 'txht' ), 'txht_homepage_text', 'text' ),
 
+		'txht_shoppage_kicker'  => array( __( 'Shop page — small label', 'txht' ), 'txht_homepage_text', 'text' ),
+		'txht_shoppage_heading' => array( __( 'Shop page — heading', 'txht' ), 'txht_homepage_text', 'text' ),
+		'txht_shoppage_tagline' => array( __( 'Shop page — intro line', 'txht' ), 'txht_homepage_text', 'textarea' ),
+
 		'txht_cta1_label'      => array( __( 'Hero button 1 — label', 'txht' ), 'txht_buttons', 'text' ),
 		'txht_cta1_url'        => array( __( 'Hero button 1 — link (e.g. #shop or a full URL)', 'txht' ), 'txht_buttons', 'text' ),
 		'txht_cta2_label'      => array( __( 'Hero button 2 — label', 'txht' ), 'txht_buttons', 'text' ),
 		'txht_cta2_url'        => array( __( 'Hero button 2 — link', 'txht' ), 'txht_buttons', 'text' ),
 		'txht_nav_cta_label'   => array( __( 'Nav button — label', 'txht' ), 'txht_buttons', 'text' ),
 		'txht_nav_cta_url'     => array( __( 'Nav button — link', 'txht' ), 'txht_buttons', 'text' ),
+		'txht_shop_btn_label'  => array( __( 'Homepage shop button — label', 'txht' ), 'txht_buttons', 'text' ),
+		'txht_shop_btn_url'    => array( __( 'Homepage shop button — link', 'txht' ), 'txht_buttons', 'text' ),
 	);
 
 	for ( $i = 1; $i <= 6; $i++ ) {
