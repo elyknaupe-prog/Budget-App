@@ -127,6 +127,22 @@ https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJ
 
 It takes 2 to 3 minutes and there is no commitment. Happy to answer questions in the comments.
 
+## Post — advertising that scales, business audience (copy-paste)
+
+Most small business advertising works the same way. You pay for an ad, it runs for a set window, then it is gone, and you start over again next month.
+
+Sponsoring a local youth sports team through Team Backed works differently. Your logo is not a one time impression. It is on the jerseys at every practice and every game, all season long, and the team tags you in their posts the whole way through. Every month you get a report showing exactly where your name has been seen.
+
+That is what makes it scale. You are not buying a single ad. You are buying repeated exposure to the same group of local families, week after week, usually for less than the cost of one month of a typical local ad campaign.
+
+Sponsorships start around $300 a month and scale up from there depending on the size of the team and its following. Most businesses treat this as a normal advertising expense, and we send documentation every month to make that easy on your end.
+
+If you want to see what is currently available, fill this out and I will match you with a team:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdMFQ0DTVcyilQWUFQQ46VLqSKFmsg7YCgPH-nJPg3ZauVJQA/viewform?usp=dialog
+
+It takes 2 to 3 minutes and there is no commitment. Happy to answer questions in the comments.
+
 ## Cold outreach email — local businesses near a team (template)
 
 Subject: Your logo on [TEAM NAME]'s jerseys — [CITY]'s youth [SPORT] team is looking for a local sponsor
