@@ -70,6 +70,13 @@
   .msg.err { color: var(--danger); }
   .hidden { display: none !important; }
   .foot { color: var(--faint); font-size: 13px; text-align: center; margin-top: 4px; }
+  .help { margin-top: 18px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 4px 18px; box-shadow: var(--shadow); }
+  .help summary { cursor: pointer; font-weight: 650; font-size: 15px; padding: 12px 0; color: var(--accent); }
+  .help[open] summary { margin-bottom: 4px; }
+  .help ol { padding-left: 20px; }
+  .help li { margin: 6px 0; font-size: 15px; }
+  .help p { font-size: 15px; }
+  .hint { background: var(--accent-soft); color: var(--ink); border-radius: 10px; padding: 10px 12px; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 </style>
@@ -115,6 +122,18 @@
     <div class="card transcript" id="transcript"></div>
     <p class="foot">Tap any sentence to start reading from there.</p>
   </div>
+
+  <details class="help">
+    <summary>Voice sounds robotic? Get much better voices — free</summary>
+    <p class="hint" id="voicehint">The best voice your phone currently has is a basic one. Downloading an <strong>Enhanced</strong> or <strong>Premium</strong> voice below makes a big difference.</p>
+    <p><strong>On iPhone / iPad:</strong></p>
+    <ol>
+      <li>Open <strong>Settings → Accessibility → Spoken Content → Voices → English</strong>.</li>
+      <li>Tap a voice (e.g. <em>Ava</em>, <em>Samantha</em>, or <em>Zoe</em>) and download the one labelled <strong>Enhanced</strong> or <strong>Premium</strong>.</li>
+      <li>Come back here, <strong>reload the page</strong>, and pick that voice (marked ⭐) from the Voice menu.</li>
+    </ol>
+    <p class="foot" style="text-align:left">These are Apple's own higher-quality voices — free, and far warmer than the default. Voices marked ⭐ above are the most natural ones your device offers.</p>
+  </details>
 </div>
 
 <script id="pdfjs-lib" type="application/octet-stream">__PDFJS_B64__</script>
@@ -164,20 +183,36 @@
 
   const voiceSel = $('voice');
   let voices = [];
+  // Higher score = more natural-sounding. Prefer Enhanced/Premium/Neural/Siri
+  // voices, push the robotic "compact"/eloquence ones to the bottom.
+  function voiceScore(v) {
+    const n = (v.name || '').toLowerCase();
+    let s = 0;
+    if (/siri/.test(n)) s += 7;
+    if (/(premium|enhanced|neural|natural)/.test(n)) s += 6;
+    if (/\bnat\b|multilingual/.test(n)) s += 3;
+    if (/google|microsoft/.test(n)) s += 3;
+    if (!v.localService) s += 1;
+    if (/compact|eloquence|espeak|novelty|fun/.test(n)) s -= 6;
+    if (v.lang && v.lang.toLowerCase().startsWith('en')) s += 2;
+    return s;
+  }
+  function isNice(v) { return voiceScore(v) >= 6; }
   function loadVoices() {
     const list = supported ? window.speechSynthesis.getVoices() : [];
     if (!list.length) return;
-    voices = list; voiceSel.innerHTML = '';
-    for (const v of list) {
+    voices = list.slice().sort((a, b) => voiceScore(b) - voiceScore(a));
+    voiceSel.innerHTML = '';
+    for (const v of voices) {
       const o = document.createElement('option');
       o.value = v.voiceURI;
-      o.textContent = `${v.name} (${v.lang})${v.localService ? '' : ' — online'}`;
+      o.textContent = `${isNice(v) ? '⭐ ' : ''}${v.name} (${v.lang})${v.localService ? '' : ' — online'}`;
       voiceSel.appendChild(o);
     }
-    const preferred =
-      list.find((v) => v.lang && v.lang.startsWith('en') && v.localService) ||
-      list.find((v) => v.lang && v.lang.startsWith('en')) || list[0];
-    if (preferred) voiceSel.value = preferred.voiceURI;
+    if (voices[0]) voiceSel.value = voices[0].voiceURI;
+    // If the best available voice is still a low-quality one, nudge the user.
+    const best = voices[0];
+    $('voicehint').classList.toggle('hidden', !!(best && isNice(best)));
   }
   if (supported) { loadVoices(); window.speechSynthesis.addEventListener('voiceschanged', loadVoices); }
   const currentVoice = () => voices.find((v) => v.voiceURI === voiceSel.value) || null;

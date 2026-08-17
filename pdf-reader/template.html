@@ -153,21 +153,31 @@
     // ---- voices --------------------------------------------------------
     const voiceSel = $('voice');
     let voices = [];
+    function voiceScore(v) {
+      const n = (v.name || '').toLowerCase();
+      let s = 0;
+      if (/siri/.test(n)) s += 7;
+      if (/(premium|enhanced|neural|natural)/.test(n)) s += 6;
+      if (/\bnat\b|multilingual/.test(n)) s += 3;
+      if (/google|microsoft/.test(n)) s += 3;
+      if (!v.localService) s += 1;
+      if (/compact|eloquence|espeak|novelty|fun/.test(n)) s -= 6;
+      if (v.lang && v.lang.toLowerCase().startsWith('en')) s += 2;
+      return s;
+    }
+    function isNice(v) { return voiceScore(v) >= 6; }
     function loadVoices() {
       const list = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
       if (!list.length) return;
-      voices = list;
+      voices = list.slice().sort((a, b) => voiceScore(b) - voiceScore(a));
       voiceSel.innerHTML = '';
-      for (const v of list) {
+      for (const v of voices) {
         const o = document.createElement('option');
         o.value = v.voiceURI;
-        o.textContent = `${v.name} (${v.lang})${v.localService ? '' : ' — online'}`;
+        o.textContent = `${isNice(v) ? '⭐ ' : ''}${v.name} (${v.lang})${v.localService ? '' : ' — online'}`;
         voiceSel.appendChild(o);
       }
-      const preferred =
-        list.find((v) => v.lang && v.lang.startsWith('en') && v.localService) ||
-        list.find((v) => v.lang && v.lang.startsWith('en')) || list[0];
-      if (preferred) voiceSel.value = preferred.voiceURI;
+      if (voices[0]) voiceSel.value = voices[0].voiceURI;
     }
     if (supported) {
       loadVoices();
