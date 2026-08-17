@@ -6,6 +6,7 @@ import JointDashboard from './pages/JointDashboard.jsx';
 import Goals from './pages/Goals.jsx';
 import Opportunity from './pages/Opportunity.jsx';
 import Settings from './pages/Settings.jsx';
+import PdfReader from './pages/PdfReader.jsx';
 import { useProfile } from './lib/ProfileContext.jsx';
 
 function RequireProfile({ children }) {
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/goals" element={<Goals />} />
         <Route path="/opportunity" element={<Opportunity />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/reader" element={<PdfReader />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -28,6 +28,9 @@ export default function Layout() {
               <NavLink to="/opportunity" className={navItemClass}>
                 Opportunity
               </NavLink>
+              <NavLink to="/reader" className={navItemClass}>
+                Reader
+              </NavLink>
               <NavLink to="/settings" className={navItemClass}>
                 Settings
               </NavLink>
