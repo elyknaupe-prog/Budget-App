@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF Reader — read any PDF aloud</title>
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0;
+      --text: #1e293b; --muted: #64748b; --faint: #94a3b8;
+      --accent: #059669; --accent-hover: #047857;
+      --hi: #a7f3d0; --amber: #f59e0b; --amber-hover: #d97706;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --card: #1e293b; --border: #334155;
+        --text: #e2e8f0; --muted: #94a3b8; --faint: #64748b;
+        --accent: #10b981; --accent-hover: #059669;
+        --hi: #065f46; --amber: #f59e0b; --amber-hover: #d97706;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 20px; }
+    .drop {
+      border: 2px dashed var(--border); border-radius: 12px; padding: 40px 20px; text-align: center;
+      cursor: pointer; transition: border-color .15s, background .15s; background: var(--card);
+    }
+    .drop:hover, .drop.over { border-color: var(--accent); }
+    .drop strong { display: block; font-size: 15px; }
+    .drop span { display: block; font-size: 12px; color: var(--faint); margin-top: 6px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    button {
+      font: inherit; font-weight: 600; font-size: 14px; border: 0; border-radius: 8px;
+      padding: 10px 18px; cursor: pointer; color: #fff; background: var(--accent);
+    }
+    button:hover { background: var(--accent-hover); }
+    button.amber { background: var(--amber); } button.amber:hover { background: var(--amber-hover); }
+    button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    button.ghost:hover { background: var(--bg); color: var(--text); }
+    button:disabled { opacity: .5; cursor: default; }
+    .counter { font-size: 12px; color: var(--faint); margin-left: 4px; }
+    .controls { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; margin-top: 16px; }
+    @media (max-width: 560px) { .controls { grid-template-columns: 1fr; } }
+    label.field { display: block; font-size: 12px; font-weight: 600; color: var(--muted); }
+    select, input[type=range] { width: 100%; margin-top: 6px; }
+    select { padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font: inherit; }
+    input[type=range] { accent-color: var(--accent); }
+    .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .transcript { max-height: 46vh; overflow-y: auto; font-size: 15px; }
+    .chunk { cursor: pointer; border-radius: 4px; padding: 0 2px; color: var(--muted); }
+    .chunk:hover { background: var(--border); }
+    .chunk.active { background: var(--hi); color: var(--text); }
+    .msg { font-size: 14px; }
+    .msg.err { color: #e11d48; }
+    .hidden { display: none; }
+    .foot { color: var(--faint); font-size: 12px; text-align: center; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>PDF Reader</h1>
+    <p class="sub">Open a PDF and have it read aloud in a natural voice. Everything runs on your device — nothing is uploaded.</p>
+
+    <p id="unsupported" class="msg err hidden">Your browser doesn't support speech synthesis. Try Chrome, Edge, or Safari.</p>
+
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="application/pdf" class="hidden" />
+      <strong id="dropLabel">Click to choose a PDF, or drag one here</strong>
+      <span>Nothing leaves your computer.</span>
+    </label>
+
+    <p id="status" class="msg hidden"></p>
+
+    <div id="player" class="hidden">
+      <div class="card">
+        <div class="row">
+          <button id="play">Play from start</button>
+          <button id="pause" class="amber hidden">Pause</button>
+          <button id="stop" class="ghost">Stop</button>
+          <span id="counter" class="counter"></span>
+        </div>
+        <div class="controls">
+          <label class="field">Voice
+            <select id="voice"></select>
+          </label>
+          <div class="sliders">
+            <label class="field">Speed: <span id="rateVal">1.0</span>×
+              <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1" />
+            </label>
+            <label class="field">Pitch: <span id="pitchVal">1.0</span>
+              <input type="range" id="pitch" min="0.5" max="1.5" step="0.1" value="1" />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="card transcript" id="transcript"></div>
+      <p class="foot">Tip: click any sentence to start reading from there.</p>
+    </div>
+  </div>
+
+  <!-- pdf.js library + worker are embedded below as base64 so this file is fully self-contained -->
+  <script id="pdfjs-lib" type="application/octet-stream">__PDFJS_B64__</script>
+  <script id="pdfjs-worker" type="application/octet-stream">__WORKER_B64__</script>
+
+  <script type="module">
+    const $ = (id) => document.getElementById(id);
+    const supported = 'speechSynthesis' in window;
+    if (!supported) $('unsupported').classList.remove('hidden');
+
+    // Decode an embedded base64 script into a same-document blob URL.
+    function blobUrlFrom(id) {
+      const b64 = $(id).textContent.trim();
+      const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+      return URL.createObjectURL(new Blob([bytes], { type: 'text/javascript' }));
+    }
+
+    const pdfjsLib = await import(blobUrlFrom('pdfjs-lib'));
+    pdfjsLib.GlobalWorkerOptions.workerSrc = blobUrlFrom('pdfjs-worker');
+
+    // ---- text chunking -------------------------------------------------
+    function splitIntoChunks(text) {
+      const cleaned = text.replace(/\s+/g, ' ').trim();
+      if (!cleaned) return [];
+      const rough = cleaned.match(/[^.!?]+[.!?]*\s*/g) || [cleaned];
+      const chunks = [];
+      const MAX = 240;
+      for (const part of rough) {
+        const s = part.trim();
+        if (!s) continue;
+        if (s.length <= MAX) { chunks.push(s); continue; }
+        let buf = '';
+        for (const w of s.split(' ')) {
+          if ((buf + ' ' + w).trim().length > MAX) { if (buf) chunks.push(buf.trim()); buf = w; }
+          else buf = (buf + ' ' + w).trim();
+        }
+        if (buf) chunks.push(buf.trim());
+      }
+      return chunks;
+    }
+
+    // ---- state ---------------------------------------------------------
+    let chunks = [], current = -1, playing = false, paused = false, cancelled = false;
+    const spans = [];
+
+    // ---- voices --------------------------------------------------------
+    const voiceSel = $('voice');
+    let voices = [];
+    function loadVoices() {
+      const list = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+      if (!list.length) return;
+      voices = list;
+      voiceSel.innerHTML = '';
+      for (const v of list) {
+        const o = document.createElement('option');
+        o.value = v.voiceURI;
+        o.textContent = `${v.name} (${v.lang})${v.localService ? '' : ' — online'}`;
+        voiceSel.appendChild(o);
+      }
+      const preferred =
+        list.find((v) => v.lang && v.lang.startsWith('en') && v.localService) ||
+        list.find((v) => v.lang && v.lang.startsWith('en')) || list[0];
+      if (preferred) voiceSel.value = preferred.voiceURI;
+    }
+    if (supported) {
+      loadVoices();
+      window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+    }
+    const currentVoice = () => voices.find((v) => v.voiceURI === voiceSel.value) || null;
+
+    // ---- playback ------------------------------------------------------
+    const rate = $('rate'), pitch = $('pitch');
+    function setPlayingUI(on) {
+      $('play').classList.toggle('hidden', on);
+      $('pause').classList.toggle('hidden', !on);
+    }
+    function highlight(i) {
+      spans.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      if (i >= 0 && spans[i]) spans[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+      $('counter').textContent = i >= 0
+        ? `Sentence ${i + 1} of ${chunks.length}` : `${chunks.length} sentences`;
+    }
+    function speakFrom(start) {
+      if (!supported || !chunks.length) return;
+      window.speechSynthesis.cancel();
+      cancelled = false; playing = true; paused = false; setPlayingUI(true);
+      const step = (i) => {
+        if (cancelled) return;
+        if (i >= chunks.length) { playing = false; current = -1; setPlayingUI(false); highlight(-1); return; }
+        current = i; highlight(i);
+        const u = new SpeechSynthesisUtterance(chunks[i]);
+        const v = currentVoice(); if (v) u.voice = v;
+        u.rate = parseFloat(rate.value); u.pitch = parseFloat(pitch.value);
+        u.onend = () => { if (!cancelled) step(i + 1); };
+        u.onerror = (e) => {
+          if (cancelled || e.error === 'interrupted' || e.error === 'canceled') return;
+          step(i + 1);
+        };
+        window.speechSynthesis.speak(u);
+      };
+      step(start);
+    }
+    function stop() {
+      cancelled = true;
+      if (supported) window.speechSynthesis.cancel();
+      playing = false; paused = false; current = -1; setPlayingUI(false); highlight(-1);
+    }
+
+    $('play').onclick = () => {
+      if (paused) { window.speechSynthesis.resume(); paused = false; playing = true; setPlayingUI(true); return; }
+      speakFrom(current >= 0 ? current : 0);
+    };
+    $('pause').onclick = () => {
+      if (!supported) return;
+      window.speechSynthesis.pause(); paused = true; playing = false; setPlayingUI(false);
+    };
+    $('stop').onclick = stop;
+    $('play').textContent = 'Play from start';
+    rate.oninput = () => { $('rateVal').textContent = parseFloat(rate.value).toFixed(1); if (playing && current >= 0) speakFrom(current); };
+    pitch.oninput = () => { $('pitchVal').textContent = parseFloat(pitch.value).toFixed(1); if (playing && current >= 0) speakFrom(current); };
+    voiceSel.onchange = () => { if (playing && current >= 0) speakFrom(current); };
+
+    // ---- rendering -----------------------------------------------------
+    function renderTranscript() {
+      const el = $('transcript'); el.innerHTML = ''; spans.length = 0;
+      chunks.forEach((c, i) => {
+        const s = document.createElement('span');
+        s.className = 'chunk'; s.textContent = c + ' ';
+        s.onclick = () => speakFrom(i);
+        el.appendChild(s); spans[i] = s;
+      });
+    }
+    function showStatus(text, isErr) {
+      const el = $('status'); el.textContent = text || '';
+      el.classList.toggle('hidden', !text); el.classList.toggle('err', !!isErr);
+    }
+
+    // ---- pdf extraction ------------------------------------------------
+    async function handleFile(file) {
+      if (!file) return;
+      stop();
+      $('player').classList.add('hidden');
+      $('dropLabel').textContent = `Selected: ${file.name}`;
+      showStatus('Reading the PDF…', false);
+      try {
+        const buffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+        let full = '';
+        for (let p = 1; p <= pdf.numPages; p++) {
+          const page = await pdf.getPage(p);
+          const content = await page.getTextContent();
+          full += content.items.map((it) => it.str || '').join(' ') + '\n\n';
+        }
+        chunks = splitIntoChunks(full);
+        if (!chunks.length) {
+          showStatus('No readable text found. This PDF may be scanned images rather than text.', true);
+          return;
+        }
+        showStatus('', false);
+        renderTranscript(); highlight(-1);
+        $('player').classList.remove('hidden');
+      } catch (err) {
+        showStatus(err && err.message ? err.message : 'Could not read that PDF.', true);
+      }
+    }
+
+    // ---- upload wiring -------------------------------------------------
+    const drop = $('drop');
+    $('file').onchange = (e) => handleFile(e.target.files && e.target.files[0]);
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault(); drop.classList.remove('over');
+      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f && f.type === 'application/pdf') handleFile(f);
+      else if (f) showStatus('Please drop a PDF file.', true);
+    });
+  </script>
+</body>
+</html>
