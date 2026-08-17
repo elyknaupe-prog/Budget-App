@@ -1,0 +1,271 @@
+<title>PDF Reader</title>
+<style>
+  :root {
+    --bg: #f5f6f8; --card: #ffffff; --border: #e3e6eb;
+    --ink: #1c2530; --muted: #5b6875; --faint: #97a1ad;
+    --accent: #0d8f7a; --accent-ink: #ffffff; --accent-soft: #cdeee6;
+    --warn: #c77d20; --danger: #c0392f;
+    --shadow: 0 1px 2px rgba(20,30,45,.06), 0 8px 24px rgba(20,30,45,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151b; --card: #19212b; --border: #2b3644;
+      --ink: #e7ecf2; --muted: #a3b0be; --faint: #6b7887;
+      --accent: #2bbba0; --accent-ink: #05201b; --accent-soft: #123a33;
+      --warn: #e0a951; --danger: #e0685c;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10151b; --card: #19212b; --border: #2b3644;
+    --ink: #e7ecf2; --muted: #a3b0be; --faint: #6b7887;
+    --accent: #2bbba0; --accent-ink: #05201b; --accent-soft: #123a33;
+    --warn: #e0a951; --danger: #e0685c;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5; -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 28px 18px calc(28px + env(safe-area-inset-bottom)); }
+  header { margin-bottom: 22px; }
+  h1 { font-size: 26px; letter-spacing: -.02em; margin: 0 0 4px; text-wrap: balance; }
+  .sub { color: var(--muted); font-size: 15px; margin: 0; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); padding: 18px; margin-bottom: 16px; }
+  .drop {
+    display: block; text-align: center; cursor: pointer;
+    background: var(--card); border: 2px dashed var(--border); border-radius: 16px;
+    padding: 34px 18px; transition: border-color .15s, background .15s;
+  }
+  .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+  .drop strong { display: block; font-size: 16px; }
+  .drop span { display: block; font-size: 13px; color: var(--faint); margin-top: 6px; }
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  button {
+    font: inherit; font-weight: 650; font-size: 16px; border: 0; border-radius: 12px;
+    padding: 14px 22px; cursor: pointer; color: var(--accent-ink); background: var(--accent);
+    min-height: 48px; flex: 1 1 auto;
+  }
+  button:active { transform: translateY(1px); }
+  button.warn { background: var(--warn); }
+  button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); flex: 0 0 auto; }
+  button:disabled { opacity: .5; }
+  .counter { flex-basis: 100%; font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .controls { margin-top: 16px; display: grid; gap: 16px; }
+  label.field { display: block; font-size: 12px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  select {
+    width: 100%; margin-top: 8px; padding: 12px; border-radius: 12px; min-height: 48px;
+    border: 1px solid var(--border); background: var(--card); color: var(--ink); font: inherit;
+  }
+  .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  input[type=range] { width: 100%; margin-top: 10px; accent-color: var(--accent); height: 28px; }
+  .valnum { font-variant-numeric: tabular-nums; color: var(--ink); }
+  .transcript { max-height: 50vh; overflow-y: auto; font-size: 17px; -webkit-overflow-scrolling: touch; }
+  .chunk { cursor: pointer; border-radius: 5px; padding: 0 2px; color: var(--muted); }
+  .chunk.active { background: var(--accent-soft); color: var(--ink); }
+  .msg { font-size: 14px; margin: 4px 2px 16px; }
+  .msg.err { color: var(--danger); }
+  .hidden { display: none !important; }
+  .foot { color: var(--faint); font-size: 13px; text-align: center; margin-top: 4px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>PDF Reader</h1>
+    <p class="sub">Open a PDF and have it read aloud in a natural voice. Everything stays on your phone — nothing is uploaded.</p>
+  </header>
+
+  <p id="unsupported" class="msg err hidden">This browser can't speak text aloud. Try opening this page in Safari or Chrome.</p>
+
+  <label class="drop" id="drop">
+    <input type="file" id="file" accept="application/pdf,.pdf" class="hidden" />
+    <strong id="dropLabel">Tap to choose a PDF</strong>
+    <span>From Files, iCloud, Google Drive — wherever it lives.</span>
+  </label>
+
+  <p id="status" class="msg hidden"></p>
+
+  <div id="player" class="hidden">
+    <div class="card">
+      <div class="btnrow">
+        <button id="play">Play</button>
+        <button id="pause" class="warn hidden">Pause</button>
+        <button id="stop" class="ghost">Stop</button>
+        <span id="counter" class="counter"></span>
+      </div>
+      <div class="controls">
+        <label class="field">Voice
+          <select id="voice"></select>
+        </label>
+        <div class="sliders">
+          <label class="field">Speed <span class="valnum" id="rateVal">1.0</span>×
+            <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1" />
+          </label>
+          <label class="field">Pitch <span class="valnum" id="pitchVal">1.0</span>
+            <input type="range" id="pitch" min="0.5" max="1.5" step="0.1" value="1" />
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="card transcript" id="transcript"></div>
+    <p class="foot">Tap any sentence to start reading from there.</p>
+  </div>
+</div>
+
+<script id="pdfjs-lib" type="application/octet-stream">__PDFJS_B64__</script>
+<script id="pdfjs-worker" type="application/octet-stream">__WORKER_B64__</script>
+
+<script type="module">
+  const $ = (id) => document.getElementById(id);
+  const supported = 'speechSynthesis' in window;
+  if (!supported) $('unsupported').classList.remove('hidden');
+
+  function blobUrlFrom(id) {
+    const b64 = $(id).textContent.trim();
+    const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+    return URL.createObjectURL(new Blob([bytes], { type: 'text/javascript' }));
+  }
+
+  let pdfjsLib;
+  try {
+    pdfjsLib = await import(blobUrlFrom('pdfjs-lib'));
+    pdfjsLib.GlobalWorkerOptions.workerSrc = blobUrlFrom('pdfjs-worker');
+  } catch (e) {
+    $('status').textContent = 'Could not load the PDF engine in this browser: ' + (e && e.message);
+    $('status').classList.remove('hidden'); $('status').classList.add('err');
+  }
+
+  function splitIntoChunks(text) {
+    const cleaned = text.replace(/\s+/g, ' ').trim();
+    if (!cleaned) return [];
+    const rough = cleaned.match(/[^.!?]+[.!?]*\s*/g) || [cleaned];
+    const chunks = []; const MAX = 240;
+    for (const part of rough) {
+      const s = part.trim();
+      if (!s) continue;
+      if (s.length <= MAX) { chunks.push(s); continue; }
+      let buf = '';
+      for (const w of s.split(' ')) {
+        if ((buf + ' ' + w).trim().length > MAX) { if (buf) chunks.push(buf.trim()); buf = w; }
+        else buf = (buf + ' ' + w).trim();
+      }
+      if (buf) chunks.push(buf.trim());
+    }
+    return chunks;
+  }
+
+  let chunks = [], current = -1, playing = false, paused = false, cancelled = false;
+  const spans = [];
+
+  const voiceSel = $('voice');
+  let voices = [];
+  function loadVoices() {
+    const list = supported ? window.speechSynthesis.getVoices() : [];
+    if (!list.length) return;
+    voices = list; voiceSel.innerHTML = '';
+    for (const v of list) {
+      const o = document.createElement('option');
+      o.value = v.voiceURI;
+      o.textContent = `${v.name} (${v.lang})${v.localService ? '' : ' — online'}`;
+      voiceSel.appendChild(o);
+    }
+    const preferred =
+      list.find((v) => v.lang && v.lang.startsWith('en') && v.localService) ||
+      list.find((v) => v.lang && v.lang.startsWith('en')) || list[0];
+    if (preferred) voiceSel.value = preferred.voiceURI;
+  }
+  if (supported) { loadVoices(); window.speechSynthesis.addEventListener('voiceschanged', loadVoices); }
+  const currentVoice = () => voices.find((v) => v.voiceURI === voiceSel.value) || null;
+
+  const rate = $('rate'), pitch = $('pitch');
+  function setPlayingUI(on) { $('play').classList.toggle('hidden', on); $('pause').classList.toggle('hidden', !on); }
+  function highlight(i) {
+    spans.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    if (i >= 0 && spans[i]) spans[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+    $('counter').textContent = i >= 0 ? `Sentence ${i + 1} of ${chunks.length}` : `${chunks.length} sentences`;
+  }
+  function speakFrom(start) {
+    if (!supported || !chunks.length) return;
+    window.speechSynthesis.cancel();
+    cancelled = false; playing = true; paused = false; setPlayingUI(true);
+    const step = (i) => {
+      if (cancelled) return;
+      if (i >= chunks.length) { playing = false; current = -1; setPlayingUI(false); highlight(-1); return; }
+      current = i; highlight(i);
+      const u = new SpeechSynthesisUtterance(chunks[i]);
+      const v = currentVoice(); if (v) u.voice = v;
+      u.rate = parseFloat(rate.value); u.pitch = parseFloat(pitch.value);
+      u.onend = () => { if (!cancelled) step(i + 1); };
+      u.onerror = (e) => { if (cancelled || e.error === 'interrupted' || e.error === 'canceled') return; step(i + 1); };
+      window.speechSynthesis.speak(u);
+    };
+    step(start);
+  }
+  function stop() {
+    cancelled = true; if (supported) window.speechSynthesis.cancel();
+    playing = false; paused = false; current = -1; setPlayingUI(false); highlight(-1);
+  }
+
+  $('play').onclick = () => {
+    if (paused) { window.speechSynthesis.resume(); paused = false; playing = true; setPlayingUI(true); return; }
+    speakFrom(current >= 0 ? current : 0);
+  };
+  $('pause').onclick = () => { if (!supported) return; window.speechSynthesis.pause(); paused = true; playing = false; setPlayingUI(false); };
+  $('stop').onclick = stop;
+  rate.oninput = () => { $('rateVal').textContent = parseFloat(rate.value).toFixed(1); if (playing && current >= 0) speakFrom(current); };
+  pitch.oninput = () => { $('pitchVal').textContent = parseFloat(pitch.value).toFixed(1); if (playing && current >= 0) speakFrom(current); };
+  voiceSel.onchange = () => { if (playing && current >= 0) speakFrom(current); };
+
+  function renderTranscript() {
+    const el = $('transcript'); el.innerHTML = ''; spans.length = 0;
+    chunks.forEach((c, i) => {
+      const s = document.createElement('span');
+      s.className = 'chunk'; s.textContent = c + ' ';
+      s.onclick = () => speakFrom(i);
+      el.appendChild(s); spans[i] = s;
+    });
+  }
+  function showStatus(text, isErr) {
+    const el = $('status'); el.textContent = text || '';
+    el.classList.toggle('hidden', !text); el.classList.toggle('err', !!isErr);
+  }
+
+  async function handleFile(file) {
+    if (!file || !pdfjsLib) return;
+    stop(); $('player').classList.add('hidden');
+    $('dropLabel').textContent = file.name;
+    showStatus('Reading the PDF…', false);
+    try {
+      const buffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+      let full = '';
+      for (let p = 1; p <= pdf.numPages; p++) {
+        const page = await pdf.getPage(p);
+        const content = await page.getTextContent();
+        full += content.items.map((it) => it.str || '').join(' ') + '\n\n';
+      }
+      chunks = splitIntoChunks(full);
+      if (!chunks.length) { showStatus('No readable text found — this PDF looks like scanned images rather than text.', true); return; }
+      showStatus('', false); renderTranscript(); highlight(-1);
+      $('player').classList.remove('hidden');
+    } catch (err) {
+      showStatus(err && err.message ? err.message : 'Could not read that PDF.', true);
+    }
+  }
+
+  const drop = $('drop');
+  $('file').onchange = (e) => handleFile(e.target.files && e.target.files[0]);
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault(); drop.classList.remove('over');
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f && f.type === 'application/pdf') handleFile(f);
+    else if (f) showStatus('Please choose a PDF file.', true);
+  });
+</script>
