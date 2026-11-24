@@ -1,0 +1,12 @@
+{
+  "name": "options-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Options pricing, strategy analysis, risk checks and paper-trading backtests. No live order placement.",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "analyze": "node src/cli.js analyze",
+    "backtest": "node src/cli.js backtest"
+  }
+}
