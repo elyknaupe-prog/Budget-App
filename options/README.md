@@ -112,3 +112,16 @@ Robust conclusions: nothing reliably beat buy-and-hold on raw return in this bul
 cash-secured puts gave ~2/3 of the return with ~1/3 of the drawdown; buying calls and
 spreads/condors were the weakest. Not modelled: early assignment, taxes (option income is
 short-term gains), real chain pricing gaps.
+
+## Timing optimization (2026-11-24) -> journal rules v2
+`node src/runOptimize.js` searches 1,080 management rules (DTE x delta x take-profit x stop x time-exit)
+for a one-spread-at-a-time put credit spread on real QQQ+VIX, picks on 2011-2019, checks on 2020-2026.
+
+- **Overfitting is real:** the #1 rule on 2011-2019 (27.9%/yr, ~0% drawdown) did -0.5%/yr with a 58% drawdown on 2020-2026.
+- **Old rules (30 DTE, 0.27 delta, +50% take-profit, 2x stop, 7-DTE exit) lost money in both periods.**
+- **Holding to expiration beat every early exit** in both periods, even with zero trading costs; stop-losses hurt everywhere.
+  Early exits re-pay the bid/ask (large vs a $5-wide spread's credit) and cut trades that would have expired worthless.
+- **Most robust:** ~45 DTE, short put 0.16-0.22 delta, hold to expiry, no stop. At 40% risk/trade (forced by $1k + $5 strikes):
+  2011-19 32.7%/yr, max DD 40%; 2020-26 16.7%/yr, max DD 40%. Buy & hold QQQ 2020-26: 18.8%/yr, max DD 33%.
+- **Entry time of day does not matter:** 30-min QQQ slots over 206 days, every |t| < 2 (differences ~0.05% of price).
+  The run stays at 10:07 ET, after the opening half hour when option spreads are widest.

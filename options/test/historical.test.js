@@ -40,3 +40,11 @@ test('30-delta strike is out of the money on the correct side', () => {
   assert.ok(m.strikeForDelta(r, 'put', 0.3, 30 / 365) < 600);
   assert.ok(m.strikeForDelta(r, 'call', 0.3, 30 / 365) > 600);
 });
+
+import { simulate } from '../src/optimize.js';
+test('optimizer finding: holding ~45 DTE spreads to expiry beats 50% take-profit + 2x stop in BOTH periods', () => {
+  const A = rows.filter((r) => r.date < '2020'), B = rows.filter((r) => r.date >= '2020');
+  const hold = { dte: 45, delta: 0.2, tp: null, sl: null, exitDte: 0, riskFrac: 0.2 };
+  const old = { dte: 30, delta: 0.27, tp: 0.5, sl: 2, exitDte: 7, riskFrac: 0.2 };
+  for (const part of [A, B]) assert.ok(simulate(part, hold).cagr > simulate(part, old).cagr);
+});

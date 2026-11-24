@@ -23,17 +23,20 @@ const REPORT = path.join(DIR, 'JOURNAL.md');
 
 export const RULES = {
   startCash: 1000,
-  targetDelta: 0.27, minDelta: 0.18, maxDelta: 0.35, // short put
-  minDte: 28, maxDte: 45,
-  widths: [1, 2, 3, 5],   // QQQ ~30-DTE strikes this far OTM are $5 apart, so in practice $5
+  // v2 rules (2026-11-24), chosen by src/runOptimize.js on 2011-2019 and confirmed on unseen 2020-2026:
+  // ~45 DTE, ~0.20 delta short put, HOLD TO EXPIRATION, no stop-loss. Early take-profits and stops
+  // lost money in both periods (they pay the bid/ask again and cut winners that would have expired).
+  targetDelta: 0.20, minDelta: 0.13, maxDelta: 0.27, // short put
+  minDte: 35, maxDte: 52,
+  widths: [1, 2, 3, 5],   // QQQ strikes this far OTM are $5 apart, so in practice $5
   // With only $1,000 the smallest real spread risks ~$400, so: ONE spread at a time.
-  // The 2x-credit stop normally limits a loser to ~$200; a gap can still cost the full max loss.
   maxRiskPerTrade: 0.45,  // of equity
   maxTotalRisk: 0.45,     // of equity, across open spreads
-  minCreditPctOfWidth: 0.20,
-  takeProfitPct: 0.50,    // close when 50% of the credit is captured
-  stopLossMultiple: 2.0,  // close when loss reaches 2x the credit
-  closeAtDte: 7,
+  minCreditPctOfWidth: 0.10,
+  takeProfitPct: null,    // hold to expiry
+  stopLossMultiple: null, // no stop
+  closeAtDte: 0,
+  expiryCushion: 0.02,    // on expiration morning: let expire if QQQ >= short strike +2%, else close at market
   feePerContractLeg: 0.03, // regulatory/exchange fees, per contract per leg per side
 };
 
@@ -77,13 +80,15 @@ export function run(journal, snap) {
       if (!q[p.shortId] || !q[p.longId]) { actions.push(`WARN no quotes for ${p.id}, kept open`); continue; }
       debit = closeCost(p, q);
       const pnl = p.credit - debit;
-      if (pnl >= p.credit * RULES.takeProfitPct) reason = 'take-profit';
-      else if (-pnl >= p.credit * RULES.stopLossMultiple) reason = 'stop-loss';
+      if (left === 0 && snap.spot >= p.shortStrike * (1 + RULES.expiryCushion)) { debit = 0; reason = 'expired-worthless'; }
+      else if (left === 0) reason = 'expiry-day-close';
+      else if (RULES.takeProfitPct != null && pnl >= p.credit * RULES.takeProfitPct) reason = 'take-profit';
+      else if (RULES.stopLossMultiple != null && -pnl >= p.credit * RULES.stopLossMultiple) reason = 'stop-loss';
       else if (left <= RULES.closeAtDte) reason = 'time-exit';
       p.lastMark = { date: snap.date, debit: r2(debit), pnl: r2((p.credit - debit) * 100 - p.fees) };
     }
     if (reason) {
-      const exitFees = reason === 'expired' ? 0 : fees(2);
+      const exitFees = reason.startsWith('expired') ? 0 : fees(2);
       journal.cash -= debit * 100 + exitFees;
       const pnl = r2((p.credit - debit) * 100 - p.fees - exitFees);
       journal.closed.push({ ...p, exitDate: snap.date, exitDebit: r2(debit), reason, pnl });
@@ -141,8 +146,8 @@ export function report(j) {
   const realized = j.closed.reduce((a, t) => a + t.pnl, 0);
   const lines = [
     '# Paper-trading journal ($1,000 start, no real orders)', '',
-    `Strategy: QQQ put credit spreads, short ~${RULES.targetDelta} delta, ${RULES.minDte}-${RULES.maxDte} DTE, max loss <= ${RULES.maxRiskPerTrade * 100}% of equity per trade,`,
-    `<= ${RULES.maxTotalRisk * 100}% total. Exit at +${RULES.takeProfitPct * 100}% of credit, -${RULES.stopLossMultiple}x credit, or ${RULES.closeAtDte} DTE. Fills use Robinhood "high fill rate" prices + fees.`, '',
+    `Strategy: QQQ put credit spreads, short ~${RULES.targetDelta} delta, ${RULES.minDte}-${RULES.maxDte} DTE, entered at the 10:07 ET run, max loss <= ${RULES.maxRiskPerTrade * 100}% of equity per trade,`,
+    `<= ${RULES.maxTotalRisk * 100}% total. Rules v2: hold to expiration, no stop; on expiration morning let it expire if QQQ is ${RULES.expiryCushion * 100}%+ above the short strike, else close. Fills use Robinhood "high fill rate" prices + fees.`, '',
     `**As of ${last.date}:** equity **$${last.equity.toFixed(2)}** (${((last.equity / RULES.startCash - 1) * 100).toFixed(2)}%) vs buy-and-hold QQQ **$${last.benchmark.toFixed(2)}** (${((last.benchmark / RULES.startCash - 1) * 100).toFixed(2)}%).`,
     `Closed trades: ${j.closed.length} (${wins} winners), realized P&L $${realized.toFixed(2)}. Open: ${j.open.length}, risk in use $${last.riskUsed.toFixed(0)}.`, '',
     '## Open positions', '', '| Spread | Opened | Credit | Max loss | Breakeven | Last mark P&L |', '|---|---|---|---|---|---|',
