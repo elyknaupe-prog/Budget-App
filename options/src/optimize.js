@@ -8,26 +8,26 @@ import { loadDaily, makeMarket } from './historicalBacktest.js';
 
 const TBILL_DEFAULT = 0.02;
 
-function strikeForDelta(m, row, target, T) {
+function strikeForDelta(m, row, target, T, gridPct = 0.0079) {
   const S = row.c, step = S >= 100 ? 1 : 0.5;
   let best = null;
   for (let k = Math.round((S * 0.7) / step) * step; k <= S; k += step) {
     const d = Math.abs(greeks({ type: 'put', S, K: k, T, r: m.r(row), sigma: m.ivAt(row, S, k) }).delta);
     if (!best || Math.abs(d - target) < best.e) best = { k, e: Math.abs(d - target) };
   }
-  // real QQQ strikes this far OTM are $5 apart at today's prices (~0.8% of spot)
-  const coarse = Math.max(step, Math.round((S * 0.0079) / step) * step);
+  // listed strikes this far OTM: QQQ $5 apart at ~$636 (~0.8% of spot); XLF $1 at ~$56 (~1.8%)
+  const coarse = Math.max(step, Math.round((S * gridPct) / step) * step);
   return Math.round(best.k / coarse) * coarse;
 }
 
 export function simulate(rows, p, mkt = {}) {
-  const { dte = 30, delta = 0.27, tp = 0.5, sl = 2, exitDte = 7, riskFrac = 0.4, costMult = 1 } = p;
+  const { dte = 30, delta = 0.27, tp = 0.5, sl = 2, exitDte = 7, riskFrac = 0.4, costMult = 1, gridPct = 0.0079, widthPct = 0.0079, hsPct = null } = p;
   const m = makeMarket(mkt);
-  const hs = (S) => costMult * Math.max(0.01, 0.03 * (S / 600)); // half bid/ask per leg, scaled to price level
+  const hs = (S) => costMult * (hsPct != null ? Math.max(0.005, hsPct * S) : Math.max(0.01, 0.03 * (S / 600))); // half bid/ask per leg
   const putVal = (row, K, daysLeft) => (daysLeft <= 0 ? Math.max(K - row.c, 0)
     : price({ type: 'put', S: row.c, K, T: daysLeft / 365, r: m.r(row) ?? TBILL_DEFAULT, sigma: m.ivAt(row, row.c, K) }));
   let eq = 1, peak = 1, maxDD = 0, pos = null;
-  const trades = [];
+  const trades = [], curve = [{ date: rows[0].date, eq: 1 }];
   const cal = (a, b) => (Date.parse(b) - Date.parse(a)) / 86400000;
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
@@ -44,6 +44,7 @@ export function simulate(rows, p, mkt = {}) {
         const r = pos.n * pnl;                       // fraction of equity
         eq *= 1 + r;
         trades.push({ open: pos.date, close: row.date, reason, ret: r, days: cal(pos.date, row.date) });
+        curve.push({ date: row.date, eq });
         pos = null;
         peak = Math.max(peak, eq); maxDD = Math.max(maxDD, 1 - eq / peak);
         continue; // re-enter next trading day, like the journal
@@ -51,8 +52,9 @@ export function simulate(rows, p, mkt = {}) {
     }
     if (!pos && i + 5 < rows.length && (!p.filter || p.filter(rows, i))) {
       const T = dte / 365;
-      const Ks = strikeForDelta(m, row, delta, T);
-      const w = Math.max(row.c >= 100 ? 1 : 0.5, Math.round((row.c * 0.0079) / (row.c >= 100 ? 1 : 0.5)) * (row.c >= 100 ? 1 : 0.5));
+      const Ks = strikeForDelta(m, row, delta, T, gridPct);
+      const st = row.c >= 100 ? 1 : 0.5;
+      const w = Math.max(st, Math.round((row.c * widthPct) / st) * st);
       const Kl = Ks - w;
       const credit = putVal(row, Ks, dte) - putVal(row, Kl, dte) - 2 * hs(row.c);
       if (credit <= 0.05 * w) continue;
@@ -65,7 +67,7 @@ export function simulate(rows, p, mkt = {}) {
   return {
     cagr: eq ** (1 / years) - 1, maxDD, trades: trades.length, winRate: wins.length / trades.length,
     avgDays: trades.reduce((a, t) => a + t.days, 0) / trades.length,
-    reasons: trades.reduce((a, t) => ((a[t.reason] = (a[t.reason] ?? 0) + 1), a), {}), eq,
+    reasons: trades.reduce((a, t) => ((a[t.reason] = (a[t.reason] ?? 0) + 1), a), {}), eq, curve,
   };
 }
 
@@ -78,3 +80,19 @@ export function grid() {
 }
 
 export { loadDaily };
+
+// Run k staggered sub-accounts (each 1/k of capital, offset by `gap` trading days) and combine,
+// e.g. 3 XLF spreads open at once with a $1k account.
+export function ladder(rows, p, mkt = {}, k = 3, gap = 12) {
+  const subs = Array.from({ length: k }, (_, j) => simulate(rows.slice(j * gap), p, mkt).curve);
+  const dates = rows.map((r) => r.date);
+  const idx = subs.map(() => 0), cur = subs.map(() => 1);
+  let peak = 1, maxDD = 0, eq = 1;
+  for (const d of dates) {
+    subs.forEach((c, j) => { while (idx[j] < c.length && c[idx[j]].date <= d) { cur[j] = c[idx[j]].eq; idx[j]++; } });
+    eq = cur.reduce((a, b) => a + b, 0) / k;
+    peak = Math.max(peak, eq); maxDD = Math.max(maxDD, 1 - eq / peak);
+  }
+  const years = (Date.parse(dates.at(-1)) - Date.parse(dates[0])) / 86400000 / 365.25;
+  return { cagr: eq ** (1 / years) - 1, maxDD, eq };
+}

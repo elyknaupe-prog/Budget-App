@@ -48,3 +48,10 @@ test('optimizer finding: holding ~45 DTE spreads to expiry beats 50% take-profit
   const old = { dte: 30, delta: 0.27, tp: 0.5, sl: 2, exitDte: 7, riskFrac: 0.2 };
   for (const part of [A, B]) assert.ok(simulate(part, hold).cagr > simulate(part, old).cagr);
 });
+
+test('XLF gate: at today\'s calibrated option pricing (IV ~0.8x VIX) XLF spreads lose money in both periods -> not added', async () => {
+  const { simulate: sim } = await import('../src/optimize.js');
+  const X = loadDaily(new URL('../data/xlf_vix_daily.csv', import.meta.url).pathname);
+  const p = { dte: 45, delta: 0.2, tp: null, sl: null, exitDte: 0, gridPct: 1 / 56, widthPct: 1 / 56, hsPct: 0.00015, riskFrac: 0.085 };
+  for (const part of [X.filter((r) => r.date < '2020'), X.filter((r) => r.date >= '2020')]) assert.ok(sim(part, p, { ivMult: 0.8 }).cagr < 0);
+});

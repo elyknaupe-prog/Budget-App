@@ -140,3 +140,20 @@ moves with OK / WATCH / DANGER status (information only; v2 has no stop), IV / 2
 and a model-vs-real price check on every entry. First check: model credit $1.05 vs real mid $1.06 (0.99x), so the
 backtest's option pricing matched the live market. IV/RV as an entry filter did not help out of sample (logged only).
 `node paper/trader.js report` rebuilds JOURNAL.md.
+
+## Backtest gate: nothing is paper- or real-traded until it passes
+A rule/fund is used only if it is profitable after costs in BOTH 2011-2019 and 2020-2026 across the plausible range
+of option pricing, at the position size it would actually trade at.
+
+### XLF put credit spreads (2026-11-24): FAILED, not added
+Real XLF daily prices 2011-2026 (`data/xlf_vix_daily.csv`). Calibration on live quotes: XLF Jan-15 53/52 spread mid
+$0.16 matches IV ~0.8x VIX (QQQ's live quotes match ~1.2x+). Historically XLF moves ~1.0x VIX, same as QQQ.
+
+| XLF option pricing (x VIX) | 2011-19, 1 spread (8.5% risk) | 2020-26, 1 spread | 2011-19, 3 staggered | 2020-26, 3 staggered |
+|---|---|---|---|---|
+| 0.8 (today) | -3.7%/yr | -0.6%/yr | -6.9%/yr | -8.9%/yr |
+| 1.0 | -0.6%/yr | -0.1%/yr | -2.1%/yr | -0.9%/yr |
+| 1.2 | +2.1%/yr | +1.2%/yr | +4.8%/yr | +5.3%/yr |
+
+Selling XLF puts only works when XLF options are rich relative to how much XLF moves; right now they are cheap.
+High win rate (86-92%) again does not mean profit. XLF buy & hold: ~9-10%/yr price + ~2% dividends.
