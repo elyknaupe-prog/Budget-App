@@ -186,6 +186,28 @@ export function run(journal, snap) {
   return { journal, actions };
 }
 
+// Week-by-week scorecard (weeks start Monday). Change is measured from the previous week's
+// last close (or the $1,000 start) to this week's last logged day.
+export function weekly(j) {
+  const monday = (d) => { const t = new Date(d + 'T12:00:00Z'); const k = (t.getUTCDay() + 6) % 7; t.setUTCDate(t.getUTCDate() - k); return t.toISOString().slice(0, 10); };
+  const weeks = [];
+  for (const d of j.days) {
+    const w = monday(d.date);
+    if (!weeks.length || weeks.at(-1).week !== w) weeks.push({ week: w, days: [] });
+    weeks.at(-1).days.push(d);
+  }
+  let prevEq = RULES.startCash, prevB = RULES.startCash;
+  return weeks.map((w) => {
+    const last = w.days.at(-1);
+    const opened = j.closed.concat(j.open).filter((t) => monday(t.openDate) === w.week).length;
+    const closed = j.closed.filter((t) => monday(t.exitDate) === w.week);
+    const row = { week: w.week, days: w.days.length, equity: last.equity, change: r2(last.equity - prevEq), pct: r2((last.equity / prevEq - 1) * 100),
+      benchPct: r2((last.benchmark / prevB - 1) * 100), opened, closed: closed.length, realized: r2(closed.reduce((a, t) => a + t.pnl, 0)) };
+    prevEq = last.equity; prevB = last.benchmark;
+    return row;
+  });
+}
+
 function maxDD(xs) { let pk = -Infinity, dd = 0; for (const x of xs) { pk = Math.max(pk, x); dd = Math.max(dd, 1 - x / pk); } return dd; }
 function stats(j) {
   const t = j.closed, wins = t.filter((x) => x.pnl > 0), losses = t.filter((x) => x.pnl <= 0);
@@ -216,6 +238,8 @@ export function report(j) {
     ...j.open.map((p) => { const m = p.lastMark ?? {}, g = m.greeks ?? {}, c = m.cushion ?? {};
       return `| ${p.id} | ${p.openDate} | ${m.dte ?? ''} | $${(p.credit * 100).toFixed(0)} | $${p.maxLoss.toFixed(0)} | ${p.breakeven} | $${m.pnl ?? 0} | ${g.delta ?? ''} | ${g.theta ?? ''} | ${g.vega ?? ''} | ${c.pct ?? ''}% / ${c.sd ?? ''} EM | ${c.status ?? ''} |`; }), '',
     'Delta: $ gained per $1 QQQ rise. Theta: $ earned per day from time decay. Vega: $ change per 1-point rise in implied vol. Cushion: % and expected moves (EM = 1 std-dev to expiry) above the short strike.', '',
+    '## Week by week', '', '| Week of | Days | Equity (end) | Change | Change % | Buy & hold % | Opened | Closed | Realized P&L |', '|---|---|---|---|---|---|---|---|---|',
+    ...weekly(j).reverse().map((w) => `| ${w.week} | ${w.days} | $${w.equity.toFixed(2)} | $${w.change} | ${w.pct}% | ${w.benchPct}% | ${w.opened} | ${w.closed} | $${w.realized} |`), '',
     '## Stats', '', ...stats(j), '',
     '## Closed trades', '', '| Spread | Opened | Closed | Credit | Paid to close | Reason | P&L |', '|---|---|---|---|---|---|---|',
     ...j.closed.map((t) => `| ${t.id} | ${t.openDate} | ${t.exitDate} | $${(t.credit * 100).toFixed(0)} | $${(t.exitDebit * 100).toFixed(0)} | ${t.reason} | $${t.pnl} |`), '',

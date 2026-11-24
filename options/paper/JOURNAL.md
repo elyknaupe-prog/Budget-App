@@ -14,6 +14,12 @@ Closed trades: 0 (0 winners), realized P&L $0.00. Open: 1, risk in use $399.
 
 Delta: $ gained per $1 QQQ rise. Theta: $ earned per day from time decay. Vega: $ change per 1-point rise in implied vol. Cushion: % and expected moves (EM = 1 std-dev to expiry) above the short strike.
 
+## Week by week
+
+| Week of | Days | Equity (end) | Change | Change % | Buy & hold % | Opened | Closed | Realized P&L |
+|---|---|---|---|---|---|---|---|---|
+| 2026-11-23 | 1 | $999.94 | $-0.06 | -0.01% | 0% | 1 | 0 | $0 |
+
 ## Stats
 
 | Metric | Value |

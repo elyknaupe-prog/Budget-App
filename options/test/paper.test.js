@@ -79,3 +79,17 @@ test('realized vol of a constant 1%/day zig-zag is ~15.9% annualized', () => {
   assert.ok(Math.abs(realizedVol(closes) - 0.0100 * Math.sqrt(252)) < 0.002);
   assert.equal(realizedVol([1, 2, 3]), null);
 });
+
+import { weekly } from '../paper/trader.js';
+test('weekly scorecard groups days by Monday-start week and measures week-over-week change', () => {
+  const j = open(); // opened Tue 2026-11-24
+  run(j, { date: '2026-11-25', spot: 640, vix: 25, quotes: { ...q('s', 600, 11, 11.05, -0.2), ...q('l', 595, 10.2, 10.25, -0.18) } });
+  run(j, { date: '2026-11-30', spot: 645, vix: 22, quotes: { ...q('s', 600, 9, 9.05, -0.17), ...q('l', 595, 8.4, 8.45, -0.15) } });
+  const w = weekly(j);
+  assert.equal(w.length, 2);
+  assert.equal(w[0].week, '2026-11-23');
+  assert.equal(w[0].days, 2);
+  assert.equal(w[1].week, '2026-11-30');
+  assert.equal(w[0].opened, 1);
+  assert.ok(Math.abs(w[1].change - (w[1].equity - w[0].equity)) < 0.01);
+});
