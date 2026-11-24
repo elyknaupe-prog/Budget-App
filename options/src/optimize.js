@@ -49,7 +49,7 @@ export function simulate(rows, p, mkt = {}) {
         continue; // re-enter next trading day, like the journal
       }
     }
-    if (!pos && i + 5 < rows.length) {
+    if (!pos && i + 5 < rows.length && (!p.filter || p.filter(rows, i))) {
       const T = dte / 365;
       const Ks = strikeForDelta(m, row, delta, T);
       const w = Math.max(row.c >= 100 ? 1 : 0.5, Math.round((row.c * 0.0079) / (row.c >= 100 ? 1 : 0.5)) * (row.c >= 100 ? 1 : 0.5));

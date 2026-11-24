@@ -125,3 +125,11 @@ for a one-spread-at-a-time put credit spread on real QQQ+VIX, picks on 2011-2019
   2011-19 32.7%/yr, max DD 40%; 2020-26 16.7%/yr, max DD 40%. Buy & hold QQQ 2020-26: 18.8%/yr, max DD 33%.
 - **Entry time of day does not matter:** 30-min QQQ slots over 206 days, every |t| < 2 (differences ~0.05% of price).
   The run stays at 10:07 ET, after the opening half hour when option spreads are widest.
+
+### Entry filters and robustness (2026-11-24)
+- Filters tested on v2 (picked on 2011-19, checked on 2020-26): QQQ above 20/50/200-day average, VIX >= 15/18,
+  VIX <= 30, VIX not spiking, after a down day, combinations. **None beat no filter in either period.**
+- **Start-date sensitivity:** the same v2 rules on 2020-26 return anywhere from +16.7%/yr to -12.8%/yr just by
+  starting 0-19 trading days later (at 40% risk/trade). At 10% risk: +5.2% to -0.9%/yr.
+  With ~50-60 trades, the result is decided by whether 1-3 big losses land in the window. Further rule tuning
+  on this data is curve-fitting; the honest estimate of the edge is small (a few %/yr at 10% risk, about T-bill level).
