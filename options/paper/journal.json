@@ -48,8 +48,27 @@
       "lastMark": {
         "date": "2026-11-24",
         "debit": 1.01,
-        "pnl": -0.06
-      }
+        "pnl": -0.06,
+        "greeks": {
+          "delta": 2.15,
+          "gamma": -0.0301,
+          "theta": 0.78,
+          "vega": -2.53
+        },
+        "cushion": {
+          "pct": 6.04,
+          "sd": 0.52,
+          "expectedMove": 69.57,
+          "status": "WATCH"
+        },
+        "dte": 30
+      },
+      "modelCheck": {
+        "modelCredit": 1.05,
+        "realMidCredit": 1.06,
+        "ratio": 0.99
+      },
+      "shortIv": 0.381395
     }
   ],
   "closed": [],

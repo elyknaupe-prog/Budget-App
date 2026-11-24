@@ -133,3 +133,10 @@ for a one-spread-at-a-time put credit spread on real QQQ+VIX, picks on 2011-2019
   starting 0-19 trading days later (at 40% risk/trade). At 10% risk: +5.2% to -0.9%/yr.
   With ~50-60 trades, the result is decided by whether 1-3 big losses land in the window. Further rule tuning
   on this data is curve-fitting; the honest estimate of the edge is small (a few %/yr at 10% risk, about T-bill level).
+
+### Journal analytics (2026-11-24)
+Daily per-position Greeks ($ delta / theta / vega, gamma), cushion above the short strike in % and in expected
+moves with OK / WATCH / DANGER status (information only; v2 has no stop), IV / 20-day realized vol, running stats,
+and a model-vs-real price check on every entry. First check: model credit $1.05 vs real mid $1.06 (0.99x), so the
+backtest's option pricing matched the live market. IV/RV as an entry filter did not help out of sample (logged only).
+`node paper/trader.js report` rebuilds JOURNAL.md.

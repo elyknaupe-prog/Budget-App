@@ -49,3 +49,33 @@ test('expired spread settles at intrinsic', () => {
   assert.equal(j.closed[0].reason, 'expired');
   assert.equal(j.closed[0].exitDebit, 5);
 });
+
+import { positionGreeks, cushion, realizedVol } from '../paper/trader.js';
+// Real Robinhood quotes for the open QQQ Dec-24 600/595 put spread, 2026-11-24 19:55Z
+const realQ = {
+  s: { strike: 600, delta: -0.269626, gamma: 0.004772, theta: -0.362691, vega: 0.601484, iv: 0.381395 },
+  l: { strike: 595, delta: -0.248154, gamma: 0.004471, theta: -0.354911, vega: 0.576205, iv: 0.388399 },
+};
+const pos = { shortId: 's', longId: 'l', shortStrike: 600 };
+
+test('position Greeks from real quotes: ~+2 delta, ~+$0.78/day theta, ~-$2.53 vega', () => {
+  const g = positionGreeks(pos, realQ, 636.25, 30);
+  assert.ok(Math.abs(g.delta - 2.15) < 0.01, `delta ${g.delta}`);
+  assert.ok(Math.abs(g.theta - 0.78) < 0.01, `theta ${g.theta}`);
+  assert.ok(Math.abs(g.vega + 2.53) < 0.01, `vega ${g.vega}`);
+  assert.ok(g.gamma < 0);
+});
+
+test('cushion: 6% above strike with 38% IV and 30 days is only ~0.5 expected moves (EM ~$70) -> WATCH', () => {
+  const c = cushion(pos, realQ, 636.25, 30);
+  assert.ok(Math.abs(c.pct - 6.04) < 0.01);
+  assert.ok(c.sd > 0.5 && c.sd < 0.6, `sd ${c.sd}`);
+  assert.equal(c.status, 'WATCH');
+  assert.equal(cushion(pos, realQ, 598, 10).status, 'DANGER (short strike breached)');
+});
+
+test('realized vol of a constant 1%/day zig-zag is ~15.9% annualized', () => {
+  const closes = [100]; for (let i = 0; i < 20; i++) closes.push(closes.at(-1) * (i % 2 ? 1.01 : 0.99));
+  assert.ok(Math.abs(realizedVol(closes) - 0.0100 * Math.sqrt(252)) < 0.002);
+  assert.equal(realizedVol([1, 2, 3]), null);
+});
