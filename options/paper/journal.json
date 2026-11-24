@@ -1,0 +1,72 @@
+{
+  "rules": {
+    "startCash": 1000,
+    "targetDelta": 0.27,
+    "minDelta": 0.18,
+    "maxDelta": 0.35,
+    "minDte": 28,
+    "maxDte": 45,
+    "widths": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "maxRiskPerTrade": 0.45,
+    "maxTotalRisk": 0.45,
+    "minCreditPctOfWidth": 0.2,
+    "takeProfitPct": 0.5,
+    "stopLossMultiple": 2,
+    "closeAtDte": 7,
+    "feePerContractLeg": 0.03
+  },
+  "startDate": "2026-11-24",
+  "cash": 1100.94,
+  "benchmark": {
+    "shares": 1.5717092337917484,
+    "startSpot": 636.25
+  },
+  "open": [
+    {
+      "id": "QQQ 2026-12-24 600/595P",
+      "openDate": "2026-11-24",
+      "expiry": "2026-12-24",
+      "shortStrike": 600,
+      "longStrike": 595,
+      "width": 5,
+      "shortId": "80a733df-16fa-4659-915b-aeccf1d73a11",
+      "longId": "f4e584c4-bcd2-4daf-8042-bce6f4af6514",
+      "shortFill": 12.07,
+      "longFill": 11.059,
+      "credit": 1.01,
+      "maxLoss": 398.96,
+      "fees": 0.06,
+      "shortDelta": -0.2696,
+      "spotAtEntry": 636.25,
+      "vixAtEntry": 27.16,
+      "breakeven": 598.99,
+      "lastMark": {
+        "date": "2026-11-24",
+        "debit": 1.01,
+        "pnl": -0.06
+      }
+    }
+  ],
+  "closed": [],
+  "days": [
+    {
+      "date": "2026-11-24",
+      "time": "2026-11-24T19:55:21Z",
+      "spot": 636.25,
+      "vix": 27.16,
+      "equity": 999.94,
+      "benchmark": 1000,
+      "open": 1,
+      "riskUsed": 398.96,
+      "actions": [
+        "OPEN QQQ 2026-12-24 600/595P: sell 600P @12.07, buy 595P @11.059, credit $101, max loss $399, breakeven 598.99"
+      ],
+      "note": "First entry (afternoon setup run). QQQ -2.3% on the day, VIX 27: puts are rich, which favors selling premium but the tape is weak."
+    }
+  ]
+}
