@@ -37,6 +37,22 @@ if (cmd === 'analyze') {
     console.log(`  ${res.runs} simulated years | win rate ${(res.avgWinRate * 100).toFixed(0)}% | median return ${res.medianReturnPct}% | 5th-95th pct ${res.p5ReturnPct}% .. ${res.p95ReturnPct}%`);
     console.log(`  profitable in ${res.pctRunsProfitable}% of years | worst drawdown ${res.worstDrawdownPct}%`);
   }
+} else if (cmd === 'box') {
+  // node src/cli.js box [--csv path/to/nq_1min.csv] [--contract MNQ]
+  const { hitRates, backtestBox, randomWalkSessions, sessionsFromCsv, NQ, MNQ } = await import('./overnightBox.js');
+  const fs = await import('node:fs');
+  const sessions = args.csv ? sessionsFromCsv(fs.readFileSync(args.csv, 'utf8')) : randomWalkSessions({ n: num('n', 3000), seed: num('seed', 42) });
+  const contract = args.contract === 'MNQ' ? MNQ : NQ;
+  const pct = (x) => (x * 100).toFixed(1) + '%';
+  const h = hitRates(sessions);
+  console.log(`\nOvernight-box study on ${args.csv ?? 'RANDOM WALK (no edge by construction)'}: ${h.sessions} sessions`);
+  console.log(`  Upper-half open -> high tapped: ${pct(h.upperOpen.highTapped)} (n=${h.upperOpen.n})   [reel claims 80.8%]`);
+  console.log(`  Lower-half open -> low tapped:  ${pct(h.lowerOpen.lowTapped)} (n=${h.lowerOpen.n})   [reel claims 75.7%]`);
+  console.log(`  Control level, same distance, opposite side: ${pct(h.mirrorTapped)}  (if ~equal, the stat is just distance)`);
+  for (const [label, opts] of [['stop at far side of box', { stop: 'far' }], ['1:1 stop', { stop: 'mirror' }], ['time stop 09:50 (1-min bars)', { stop: 'far', timeStopBars: 20 }]]) {
+    const r = backtestBox(sessions, { ...opts, contract });
+    console.log(`  Trade toward near level, ${label}: win ${pct(r.winRate)}, avg win ${r.avgWinPts.toFixed(1)} pts, avg loss ${r.avgLossPts.toFixed(1)} pts, net $${r.netUsdPerTrade.toFixed(2)}/trade, t=${r.tStat.toFixed(2)}`);
+  }
 } else {
-  console.log('Commands: analyze, backtest. See comments at top of src/cli.js');
+  console.log('Commands: analyze, backtest, box. See comments at top of src/cli.js');
 }

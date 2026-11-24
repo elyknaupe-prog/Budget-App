@@ -37,3 +37,21 @@ node src/cli.js backtest --runs 300        # Monte Carlo test of preset strategi
 - With fair pricing there is no built-in edge. Profits need an actual edge
   (implied vol consistently above realized vol, a real forecasting signal, etc.).
   Social-media claims should be tested here before risking money.
+
+## Test of the "overnight box" reel claim (NQ futures)
+Claim: split the overnight range in half at 09:30; an open in the upper half taps the
+overnight high 80.8% of the time, an open in the lower half taps the low 75.7%.
+
+```bash
+node src/cli.js box                              # zero-edge random-walk baseline
+node src/cli.js box --csv nq_1min.csv            # your real NQ data (datetime ET,open,high,low,close)
+node src/cli.js box --csv nq_1min.csv --contract MNQ
+```
+
+Result on a market that is random by construction (3,000 sessions, NQ-like volatility):
+near level tapped **80.5%**, about the same as the claim. A control level the same distance
+away on the *other* side was tapped 78.6%. The statistic measures distance: the closer
+level is closer, so price reaches it more often. Trading toward it gives a high win rate
+with small wins and large losses (75.6% wins, +57 / -180 pts), roughly zero edge before
+costs. A real edge would show up on real data as (a) near-level hit rate clearly above the
+mirror control and (b) a positive net result with |t| > 2.
