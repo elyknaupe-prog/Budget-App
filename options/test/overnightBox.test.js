@@ -59,3 +59,10 @@ test('TRADING: targeting the near level has no statistically significant edge', 
     assert.ok(Math.abs(r.tStat) < 3);
   }
 });
+
+test('a zero-edge random walk reproduces ALL FOUR of the reel numbers within ~4 points', () => {
+  // Reel (1,597 NQ sessions 2020-2026): up->H 80.8, up->L 41.7, down->L 75.7, down->H 41.9
+  const h = hitRates(randomWalkSessions({ n: 6000, seed: 7, rthVarShare: 0.7, driftPtsPerDay: 15 }));
+  const pairs = [[h.upperOpen.highTapped, 0.808], [h.upperOpen.lowTapped, 0.417], [h.lowerOpen.lowTapped, 0.757], [h.lowerOpen.highTapped, 0.419]];
+  for (const [sim, claim] of pairs) assert.ok(Math.abs(sim - claim) < 0.04, `sim ${sim} vs claim ${claim}`);
+});

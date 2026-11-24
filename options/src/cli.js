@@ -41,13 +41,13 @@ if (cmd === 'analyze') {
   // node src/cli.js box [--csv path/to/nq_1min.csv] [--contract MNQ]
   const { hitRates, backtestBox, randomWalkSessions, sessionsFromCsv, NQ, MNQ } = await import('./overnightBox.js');
   const fs = await import('node:fs');
-  const sessions = args.csv ? sessionsFromCsv(fs.readFileSync(args.csv, 'utf8')) : randomWalkSessions({ n: num('n', 3000), seed: num('seed', 42) });
+  const sessions = args.csv ? sessionsFromCsv(fs.readFileSync(args.csv, 'utf8')) : randomWalkSessions({ n: num('n', 3000), seed: num('seed', 42), rthVarShare: num('rthShare', 0.7), driftPtsPerDay: num('drift', 15) });
   const contract = args.contract === 'MNQ' ? MNQ : NQ;
   const pct = (x) => (x * 100).toFixed(1) + '%';
   const h = hitRates(sessions);
   console.log(`\nOvernight-box study on ${args.csv ?? 'RANDOM WALK (no edge by construction)'}: ${h.sessions} sessions`);
-  console.log(`  Upper-half open -> high tapped: ${pct(h.upperOpen.highTapped)} (n=${h.upperOpen.n})   [reel claims 80.8%]`);
-  console.log(`  Lower-half open -> low tapped:  ${pct(h.lowerOpen.lowTapped)} (n=${h.lowerOpen.n})   [reel claims 75.7%]`);
+  console.log(`  Upper-half open -> high tapped: ${pct(h.upperOpen.highTapped)} (n=${h.upperOpen.n}), low tapped ${pct(h.upperOpen.lowTapped)}   [reel: 80.8% / 41.7%]`);
+  console.log(`  Lower-half open -> low tapped:  ${pct(h.lowerOpen.lowTapped)} (n=${h.lowerOpen.n}), high tapped ${pct(h.lowerOpen.highTapped)}   [reel: 75.7% / 41.9%]`);
   console.log(`  Control level, same distance, opposite side: ${pct(h.mirrorTapped)}  (if ~equal, the stat is just distance)`);
   for (const [label, opts] of [['stop at far side of box', { stop: 'far' }], ['1:1 stop', { stop: 'mirror' }], ['time stop 09:50 (1-min bars)', { stop: 'far', timeStopBars: 20 }]]) {
     const r = backtestBox(sessions, { ...opts, contract });

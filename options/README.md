@@ -55,3 +55,19 @@ level is closer, so price reaches it more often. Trading toward it gives a high 
 with small wins and large losses (75.6% wins, +57 / -180 pts), roughly zero edge before
 costs. A real edge would show up on real data as (a) near-level hit rate clearly above the
 mirror control and (b) a positive net result with |t| > 2.
+
+### Update: full numbers from the reel
+The reel also shows the far level: upper-half open -> low tapped 41.7%; lower-half open -> high
+tapped 41.9% (1,597 sessions, 2020-2026). A random walk with NQ-like volatility (70% of daily
+variance in RTH) and NQ's upward drift gives:
+
+| | Reel | Random walk (no edge) |
+|---|---|---|
+| Upper-half open -> high tapped | 80.8% | 80.8% |
+| Upper-half open -> low tapped | 41.7% | 41.8% |
+| Lower-half open -> low tapped | 75.7% | 79.3% |
+| Lower-half open -> high tapped | 41.9% | 44.4% |
+
+All four numbers come out within ~4 points of what pure chance produces. The one gap (lows
+hit a bit *less* than chance) reflects the strong 2020-2026 bull market, and it works
+against the short side of this setup.

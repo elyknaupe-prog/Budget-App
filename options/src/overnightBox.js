@@ -40,8 +40,8 @@ export function hitRates(sessions) {
   const up = rows.filter((s) => s.upper), dn = rows.filter((s) => !s.upper);
   return {
     sessions: rows.length,
-    upperOpen: { n: up.length, highTapped: rate(up, 'nearTapped') },
-    lowerOpen: { n: dn.length, lowTapped: rate(dn, 'nearTapped') },
+    upperOpen: { n: up.length, highTapped: rate(up, 'nearTapped'), lowTapped: rate(up, 'farTapped') },
+    lowerOpen: { n: dn.length, lowTapped: rate(dn, 'nearTapped'), highTapped: rate(dn, 'farTapped') },
     nearTapped: rate(rows, 'nearTapped'),
     mirrorTapped: rate(rows, 'mirrorTapped'),
     farTapped: rate(rows, 'farTapped'),
@@ -104,7 +104,8 @@ function gauss(rand) {
 
 // Defaults approximate NQ: ~330 pt daily std-dev, ~65% of daily variance during RTH,
 // 930 overnight minutes (18:00-09:30), 390 RTH minutes. Zero drift, zero memory = NO edge.
-export function randomWalkSessions({ n = 2000, seed = 1, start = 24000, dailySdPts = 330, rthVarShare = 0.65, ovnMin = 930, rthMin = 390 } = {}) {
+export function randomWalkSessions({ n = 2000, seed = 1, start = 24000, dailySdPts = 330, rthVarShare = 0.65, ovnMin = 930, rthMin = 390, driftPtsPerDay = 0 } = {}) {
+  const mu = driftPtsPerDay / (ovnMin + rthMin);
   const rand = mulberry32(seed);
   const sdO = Math.sqrt(((1 - rthVarShare) * dailySdPts ** 2) / ovnMin);
   const sdR = Math.sqrt((rthVarShare * dailySdPts ** 2) / rthMin);
@@ -112,8 +113,8 @@ export function randomWalkSessions({ n = 2000, seed = 1, start = 24000, dailySdP
   let px = start;
   for (let k = 0; k < n; k++) {
     const ovn = [], rth = [];
-    for (let i = 0; i < ovnMin; i++) { px += sdO * gauss(rand); ovn.push({ o: px, h: px, l: px, c: px }); }
-    for (let i = 0; i < rthMin; i++) { rth.push({ o: px, h: px, l: px, c: px }); px += sdR * gauss(rand); }
+    for (let i = 0; i < ovnMin; i++) { px += mu + sdO * gauss(rand); ovn.push({ o: px, h: px, l: px, c: px }); }
+    for (let i = 0; i < rthMin; i++) { rth.push({ o: px, h: px, l: px, c: px }); px += mu + sdR * gauss(rand); }
     out.push({ ovn, rth });
   }
   return out;
