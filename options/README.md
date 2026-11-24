@@ -86,3 +86,29 @@ regular hours to ignore bad thin-market prints).
 | Trade it, stop at far side | - | 70% wins, +63 / -165 pts, -$12/trade MNQ, t=-0.6 |
 
 The hit rates replicate; the trades do not make money. Same as the random-walk result.
+
+## Known options strategies on real QQQ history (2011 - Nov 2026)
+`node src/runHistorical.js [--from 2020-01-01] [--ivMult 1.2]`
+
+Real daily QQQ prices + real daily VIX from Robinhood (`data/qqq_vix_daily.csv`). Options are
+priced with Black-Scholes at IV = VIX x 1.2 (Nasdaq vol runs ~1.2x S&P vol) with put skew,
+$0.03 half-spread per leg, monthly 30-day cycles held to expiry, cash earns T-bill yield.
+Spot check on 2026-11-24: real Dec-24 610 put = $14.00 (IV 36.5%) vs model $13.05, so the
+model is if anything conservative for option sellers.
+
+| Strategy | CAGR | Volatility | Sharpe | Max drawdown | Winning months |
+|---|---|---|---|---|---|
+| Buy & hold QQQ | 17.6% | 16.9% | 0.95 | 33% | 65% |
+| Cash-secured put, 30-delta | 12.0% | 6.4% | 1.54 | 12% | 88% |
+| Cash-secured put, ATM | 15.1% | 9.8% | 1.32 | 21% | 79% |
+| Covered call, 30-delta | 18.1% | 13.4% | 1.19 | 29% | 75% |
+| Put credit spread (5% risk/mo) | 5.5% | 5.2% | 0.73 | 12% | 84% |
+| Iron condor (5% risk/mo) | 4.7% | 4.8% | 0.62 | 8% | 76% |
+| Buy ATM calls (5%/mo) | 4.4% | 19.7% | 0.23 | 36% | 46% |
+| Collar | 8.3% | 11.1% | 0.62 | 26% | 63% |
+
+Sensitivity (IV = VIX x 1.0 ... 1.3): option selling's edge depends on how rich implied vol is.
+Robust conclusions: nothing reliably beat buy-and-hold on raw return in this bull market;
+cash-secured puts gave ~2/3 of the return with ~1/3 of the drawdown; buying calls and
+spreads/condors were the weakest. Not modelled: early assignment, taxes (option income is
+short-term gains), real chain pricing gaps.
