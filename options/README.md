@@ -71,3 +71,18 @@ variance in RTH) and NQ's upward drift gives:
 All four numbers come out within ~4 points of what pure chance produces. The one gap (lows
 hit a bit *less* than chance) reflects the strong 2020-2026 bull market, and it works
 against the short side of this setup.
+
+### Real-data check: QQQ, Jan 30 - Nov 23 2026 (Robinhood 30-min bars, 24/5 session)
+`node tools/robinhoodToCsv.mjs 1 <saved get_equity_historicals JSON...> > qqq.csv`, then
+`node src/cli.js box --csv qqq.csv --contract MNQ --scale 41 --barMinutes 30`
+(scale 41 converts QQQ prices to NQ-equivalent points; flag 1 uses candle bodies outside
+regular hours to ignore bad thin-market prints).
+
+| | Reel (NQ) | Real QQQ, 179 sessions |
+|---|---|---|
+| Upper-half open -> high tapped | 80.8% | 79.4% |
+| Lower-half open -> low tapped | 75.7% | 80.5% |
+| Same-distance control level | - | 74.9% |
+| Trade it, stop at far side | - | 70% wins, +63 / -165 pts, -$12/trade MNQ, t=-0.6 |
+
+The hit rates replicate; the trades do not make money. Same as the random-walk result.
