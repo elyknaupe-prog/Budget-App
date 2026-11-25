@@ -147,6 +147,7 @@ export function run(journal, snap) {
   const byStrike = (exp) => new Map(cands.filter(([, x]) => x.expiry === exp).map(([id, x]) => [x.strike, { id, ...x }]));
   const expiries = [...new Set(cands.map(([, x]) => x.expiry))].filter((e) => dte(snap.date, e) >= RULES.minDte && dte(snap.date, e) <= RULES.maxDte);
   let opened = null, skip = 'no candidate quotes';
+  if (journal.open.length && RULES.maxTotalRisk <= RULES.maxRiskPerTrade) skip = 'one spread at a time: a position is already open';
   for (const exp of expiries) {
     const m = byStrike(exp);
     const shorts = [...m.values()].filter((x) => Math.abs(x.delta) >= RULES.minDelta && Math.abs(x.delta) <= RULES.maxDelta && !journal.open.some((p) => p.expiry === exp && p.shortStrike === x.strike))

@@ -46,22 +46,22 @@
       "vixAtEntry": 27.16,
       "breakeven": 598.99,
       "lastMark": {
-        "date": "2026-11-24",
-        "debit": 1.01,
-        "pnl": -0.06,
+        "date": "2026-11-25",
+        "debit": 1.62,
+        "pnl": -61.16,
         "greeks": {
-          "delta": 2.15,
-          "gamma": -0.0301,
-          "theta": 0.78,
-          "vega": -2.53
+          "delta": 2.61,
+          "gamma": -0.024,
+          "theta": 0.08,
+          "vega": -1.54
         },
         "cushion": {
-          "pct": 6.04,
-          "sd": 0.52,
-          "expectedMove": 69.57,
-          "status": "WATCH"
+          "pct": 2.55,
+          "sd": 0.22,
+          "expectedMove": 69.8,
+          "status": "DANGER"
         },
-        "dte": 30
+        "dte": 29
       },
       "modelCheck": {
         "modelCredit": 1.05,
@@ -86,6 +86,23 @@
         "OPEN QQQ 2026-12-24 600/595P: sell 600P @12.07, buy 595P @11.059, credit $101, max loss $399, breakeven 598.99"
       ],
       "note": "First entry (afternoon setup run). QQQ -2.3% on the day, VIX 27: puts are rich, which favors selling premium but the tape is weak."
+    },
+    {
+      "date": "2026-11-25",
+      "time": "2026-11-25T15:10:04Z",
+      "spot": 615.33,
+      "vix": 32.22,
+      "rv20": 49.45,
+      "ivRv": 0.81,
+      "equity": 938.94,
+      "benchmark": 967.12,
+      "open": 1,
+      "riskUsed": 398.96,
+      "actions": [
+        "DANGER: QQQ 2026-12-24 600/595P QQQ 2.55% above short strike (0.22 expected moves); no stop by rule, holding",
+        "NO NEW TRADE: one spread at a time: a position is already open"
+      ],
+      "note": "QQQ -3.6% at the open (to 615.33 from 638.10), VIX 32: chip/AI selloff resumes the day before Thanksgiving. Spread is underwater but above both strikes; holding by rule (no stop)."
     }
   ]
 }
