@@ -46,22 +46,22 @@
       "vixAtEntry": 27.16,
       "breakeven": 598.99,
       "lastMark": {
-        "date": "2026-11-25",
-        "debit": 1.62,
-        "pnl": -61.16,
+        "date": "2026-11-27",
+        "debit": 1.04,
+        "pnl": -3.06,
         "greeks": {
-          "delta": 2.61,
-          "gamma": -0.024,
-          "theta": 0.08,
-          "vega": -1.54
+          "delta": 2.11,
+          "gamma": -0.0356,
+          "theta": 0.99,
+          "vega": -2.59
         },
         "cushion": {
-          "pct": 2.55,
-          "sd": 0.22,
-          "expectedMove": 69.8,
-          "status": "DANGER"
+          "pct": 6.43,
+          "sd": 0.57,
+          "expectedMove": 67.17,
+          "status": "WATCH"
         },
-        "dte": 29
+        "dte": 27
       },
       "modelCheck": {
         "modelCredit": 1.05,
@@ -103,6 +103,23 @@
         "NO NEW TRADE: one spread at a time: a position is already open"
       ],
       "note": "QQQ -3.6% at the open (to 615.33 from 638.10), VIX 32: chip/AI selloff resumes the day before Thanksgiving. Spread is underwater but above both strikes; holding by rule (no stop)."
+    },
+    {
+      "date": "2026-11-27",
+      "time": "2026-11-27T15:10:04Z",
+      "spot": 638.58,
+      "vix": 27.14,
+      "rv20": 47.6,
+      "ivRv": 0.81,
+      "equity": 996.94,
+      "benchmark": 1003.66,
+      "open": 1,
+      "riskUsed": 398.96,
+      "actions": [
+        "WATCH: QQQ 2026-12-24 600/595P QQQ 6.43% above short strike (0.57 expected moves); no stop by rule, holding",
+        "NO NEW TRADE: one spread at a time: a position is already open"
+      ],
+      "note": "Post-Thanksgiving half day (1pm close). QQQ recovered Wed from 615 to close 633.93 and is 638.58 now; VIX 32 -> 27. Spread back near entry value."
     }
   ]
 }
